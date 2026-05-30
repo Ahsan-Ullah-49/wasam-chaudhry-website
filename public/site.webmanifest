@@ -1,0 +1,9 @@
+{
+  "name": "WasamChaudhry.com",
+  "short_name": "Wasam",
+  "description": "Official personal brand website of Wasam Chaudhry, entrepreneur, executive producer, automotive specialist, connector, and international business operator.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A"
+}
