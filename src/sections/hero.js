@@ -2,7 +2,7 @@ export function renderHero() {
   return `
 <section class="hero-section" id="hero" aria-labelledby="hero-heading">
   <div class="hero-overlay"></div>
-  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2070&auto=format&fit=crop');"></div>
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=2400&q=80');"></div>
 
   <div class="hero-content">
     <h1 id="hero-heading" class="fade-in">WASAM CHAUDHRY</h1>

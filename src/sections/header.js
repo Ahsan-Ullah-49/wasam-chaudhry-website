@@ -13,6 +13,7 @@ export function renderHeader() {
   <button class="menu-toggle" id="mobile-menu" aria-label="Open navigation menu" aria-expanded="false" type="button">
     <span class="bar"></span>
     <span class="bar"></span>
+    <span class="bar"></span>
   </button>
 </header>
 `;
