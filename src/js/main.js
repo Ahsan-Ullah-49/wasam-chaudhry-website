@@ -4,7 +4,7 @@ import '../css/style.css';
 import { renderHeader }              from '../sections/header.js';
 import { renderHero }                from '../sections/hero.js';
 import { renderAbout }               from '../sections/about.js';
-import { renderVentures }            from '../sections/ventures.js';
+import { renderCompanies }           from '../sections/companies.js';
 import { renderInterviews }          from '../sections/interviews.js';
 import { renderGlobalNetwork }       from '../sections/globalNetwork.js';
 import { renderAutomotiveLifestyle } from '../sections/automotiveLifestyle.js';
@@ -22,7 +22,8 @@ import {
   initLightbox,
   initContactForm,
   initFooterYear,
-  initTypewriterEffect
+  initTypewriterEffect,
+  initCompaniesPinnedScroll
 } from '../utils/animations.js';
 
 function init() {
@@ -35,9 +36,9 @@ function init() {
   if (main) {
     main.innerHTML = [
       renderHero(),
-      /* Remaining sections are temporarily hidden for client preview and will be developed later:
       renderAbout(),
-      renderVentures(),
+      renderCompanies(),
+      /* Remaining sections will be developed and enabled later:
       renderInterviews(),
       renderGlobalNetwork(),
       renderAutomotiveLifestyle(),
@@ -54,15 +55,16 @@ function init() {
   */
 
   // 4. Boot all interactive behaviors
-  initNavbarScroll();   // .navbar → .scrolled on scroll
-  initHeroFadeIn();     // .fade-in → .visible with stagger
-  initSmoothScroll();   // anchor links smooth scroll
-  initMobileMenu();     // hamburger menu toggle
-  initReveal();         // section scroll reveal
-  initLightbox();       // vehicle lightbox
-  initContactForm();    // contact form preview
-  initFooterYear();     // footer copyright year
-  initTypewriterEffect(); // hero typewriter animation
+  initNavbarScroll();      // .navbar → .scrolled on scroll
+  initHeroFadeIn();        // .fade-in → .visible with stagger
+  initSmoothScroll();      // anchor links smooth scroll
+  initMobileMenu();        // hamburger menu toggle
+  initReveal();            // section scroll reveal
+  initLightbox();          // vehicle lightbox
+  initContactForm();       // contact form preview
+  initFooterYear();        // footer copyright year
+  initTypewriterEffect();  // hero typewriter animation
+  initCompaniesPinnedScroll(); // pinned companies scroll animation
 
   if (import.meta.env.DEV) {
     console.log('[WasamChaudhry.com] All sections and behaviors initialized.');

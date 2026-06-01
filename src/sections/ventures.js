@@ -1,80 +1,101 @@
 const ventures = [
   {
+    id: 'autolinx',
+    number: '01',
+    category: 'Automotive Commerce',
     name: 'Autolinx',
-    tagline: 'Automotive Compliance & Consulting',
     description:
-      'International automotive compliance and consulting services. Specialising in vehicle importation, regulatory guidance, and market entry for discerning clients across global markets.',
-    link: '#',
-    linkLabel: 'autolinx.com.au',
+      'A trusted automotive business foundation connected to premium vehicles, compliance awareness, and long-term client relationships.',
+    cta: 'Explore Venture',
+    ctaAriaLabel: 'Explore Autolinx venture',
+    monogram: 'ALX',
   },
   {
+    id: 'focus',
+    number: '02',
+    category: 'Media & Broadcast',
     name: 'Focus TV',
-    tagline: 'Independent Media & Content',
     description:
-      'A platform dedicated to purposeful storytelling, independent media production, and content that elevates perspectives across Australia and internationally.',
-    link: '#',
-    linkLabel: 'focustv.com.au',
+      'A media platform built around visibility, conversations, storytelling, and digital audience connection.',
+    cta: 'Visit Network',
+    ctaAriaLabel: 'Visit Focus TV network',
+    monogram: 'FTV',
   },
   {
+    id: 'answer',
+    number: '03',
+    category: 'Executive Production',
     name: 'The ANSWER',
-    tagline: 'Executive Produced Media Project',
     description:
-      'An executive-produced media initiative exploring the conversations, stories, and ideas that shape culture — delivered with intention and editorial precision.',
-    link: '#',
-    linkLabel: 'theanswer.com.au',
+      'A content and interview platform shaped around meaningful conversations, media presence, and purposeful storytelling.',
+    cta: 'Watch Content',
+    ctaAriaLabel: 'Watch The ANSWER content',
+    monogram: 'ANS',
   },
   {
+    id: 'future',
+    number: '04',
+    category: 'Future Ventures',
     name: 'Pear Pressure',
-    tagline: 'Creative & Lifestyle Ventures',
     description:
-      'A creative and lifestyle brand born from the belief that influence, culture, and commerce can coexist beautifully. Evolving, intentional, and unmistakably independent.',
-    link: '#',
-    linkLabel: 'Coming Soon',
+      'A forward-looking space for future business concepts, creative ideas, strategic opportunities, and emerging collaborations.',
+    cta: 'Discover Future',
+    ctaAriaLabel: 'Discover future ventures',
+    monogram: 'PRP',
   },
 ];
 
 export function renderVentures() {
   return `
-<section id="companies" aria-labelledby="ventures-heading" style="background:var(--color-matte-black);">
-  <div class="max-container section-pad">
+<section id="companies" class="companies-section" aria-labelledby="ventures-heading">
 
-    <div class="reveal" style="text-align:center;margin-bottom:4rem;">
-      <p class="section-subtitle">Companies & Ventures</p>
-      <h2 id="ventures-heading" class="section-title">
-        The Portfolio
-      </h2>
-      <div class="gold-rule gold-rule-center"></div>
-      <p style="max-width:560px;margin:0 auto;color:rgba(242,240,235,0.6);line-height:1.8;font-size:0.95rem;">
-        A collection of independent ventures spanning automotive, media, and lifestyle — each built with intention.
-      </p>
-    </div>
+  <div class="companies-header reveal-on-scroll">
+    <p class="companies-kicker">
+      <span class="companies-kicker-line" aria-hidden="true"></span>
+      VENTURES
+    </p>
+    <p class="companies-label">Built around trust, visibility, and long-term opportunity.</p>
+    <h2 id="ventures-heading">The Business Portfolio</h2>
+    <p class="companies-intro">
+      A refined look at the ventures connected to Wasam Chaudhry's personal brand, spanning automotive business, media, executive production, and future-facing opportunities.
+    </p>
+  </div>
 
-    <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;" class="ventures-grid">
-      ${ventures.map((v, i) => `
-      <article class="venture-card reveal" aria-label="${v.name} – ${v.tagline}" style="transition-delay:${i * 0.08}s;">
-        <!-- Logo placeholder -->
-        <div style="margin-bottom:1.75rem;">
-          <div class="placeholder-block" style="width:4rem;height:4rem;border-radius:2px;" role="img" aria-label="${v.name} logo placeholder">
-            <span style="font-family:var(--font-serif);font-size:1.1rem;color:var(--color-champagne-gold);font-weight:600;position:relative;z-index:1;">${v.name.charAt(0)}</span>
+  <ul class="ventures-stack" aria-label="Wasam Chaudhry business ventures">
+    ${ventures.map(v => `
+    <li class="venture-stack-card">
+      <article class="venture-card venture-card--${v.id}" aria-label="${v.name} – ${v.category}">
+
+        <div class="venture-content">
+          <div class="venture-pill" aria-label="Venture ${v.number}, category: ${v.category}">
+            <span class="venture-pill-dot" aria-hidden="true"></span>
+            Venture ${v.number} &nbsp;/&nbsp; ${v.category}
+          </div>
+
+          <h3>${v.name}</h3>
+
+          <p>${v.description}</p>
+
+          <a href="#" class="venture-button" aria-label="${v.ctaAriaLabel}">
+            ${v.cta}
+            <span class="venture-btn-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="venture-visual" aria-hidden="true">
+          <div class="venture-logo-shell">
+            <div class="venture-logo-mark">
+              <span>${v.monogram}</span>
+              <i class="venture-gold-rule"></i>
+            </div>
           </div>
         </div>
 
-        <p style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--color-champagne-gold);margin-bottom:0.5rem;font-family:var(--font-sans);">${v.tagline}</p>
-        <h3 style="font-family:var(--font-serif);font-size:1.75rem;font-weight:600;color:var(--color-off-white);margin-bottom:1rem;letter-spacing:0.05em;">${v.name}</h3>
-        <p style="color:rgba(242,240,235,0.6);line-height:1.8;font-size:0.9rem;margin-bottom:1.75rem;">${v.description}</p>
-
-        <a href="${v.link}"
-           class="btn-outline"
-           style="font-size:0.65rem;padding:0.625rem 1.25rem;"
-           aria-label="Visit ${v.name}"
-           ${v.linkLabel === 'Coming Soon' ? 'aria-disabled="true" tabindex="-1" style="font-size:0.65rem;padding:0.625rem 1.25rem;opacity:0.5;pointer-events:none;"' : ''}>
-          ${v.linkLabel === 'Coming Soon' ? '&#9679; Coming Soon' : '&#8599; ' + v.linkLabel}
-        </a>
       </article>
-      `).join('')}
-    </div>
+    </li>
+    `).join('')}
+  </ul>
 
-  </div>
 </section>
 `;
 }

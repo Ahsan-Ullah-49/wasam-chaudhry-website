@@ -111,7 +111,7 @@ export function initMobileMenu() {
    IntersectionObserver on .reveal elements
 ───────────────────────────────────────────────────────── */
 export function initReveal() {
-  const elements = document.querySelectorAll('.reveal');
+  const elements = document.querySelectorAll('.reveal, .reveal-on-scroll');
   if (!elements.length) return;
 
   if (prefersReducedMotion) {
@@ -123,12 +123,18 @@ export function initReveal() {
     entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          const el = entry.target;
+          // Honour per-card stagger set via --card-delay inline style
+          const delay = el.style.getPropertyValue('--card-delay');
+          if (delay) {
+            el.style.transitionDelay = delay;
+          }
+          el.classList.add('visible');
+          observer.unobserve(el);
         }
       });
     },
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0.10, rootMargin: '0px 0px -32px 0px' }
   );
 
   elements.forEach(el => observer.observe(el));
@@ -244,4 +250,96 @@ export function initTypewriterEffect() {
   }
 
   typeWriter();
+}
+
+/* ─────────────────────────────────────────────────────────
+   10. COMPANIES PINNED SCROLL ANIMATION
+   Cinematic scroll animation for Venture Theatre
+───────────────────────────────────────────────────────── */
+export function initCompaniesPinnedScroll() {
+  const section = document.querySelector("[data-companies-pinned]");
+  if (!section) return;
+
+  const slides = Array.from(section.querySelectorAll("[data-company-slide]"));
+  const progressBar = section.querySelector(".companies-progress span");
+
+  if (!slides.length) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
+
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+
+  let ticking = false;
+
+  function setMobileFallback() {
+    const shouldFallback = prefersReducedMotion || mobileQuery.matches;
+
+    section.classList.toggle("companies-fallback", shouldFallback);
+
+    if (shouldFallback) {
+      slides.forEach((slide) => {
+        slide.style.transform = "";
+        slide.style.filter = "";
+        slide.style.zIndex = "";
+      });
+
+      if (progressBar) {
+        progressBar.style.transform = "";
+      }
+    }
+
+    return shouldFallback;
+  }
+
+  function update() {
+    ticking = false;
+
+    if (setMobileFallback()) return;
+
+    const rect = section.getBoundingClientRect();
+    const scrollable = section.offsetHeight - window.innerHeight;
+    const progress = clamp(-rect.top / scrollable, 0, 1);
+    const step = progress * (slides.length - 1);
+
+    slides.forEach((slide, index) => {
+      let y = 0;
+      let scale = 1;
+      let brightness = 1;
+
+      if (index === 0) {
+        y = 0;
+      } else {
+        const local = clamp(step - (index - 1), 0, 1);
+        const eased = easeOutCubic(local);
+        y = (1 - eased) * 115;
+      }
+
+      const coveredDepth = clamp(step - index, 0, 1);
+      scale = 1 - coveredDepth * 0.045;
+      brightness = 1 - coveredDepth * 0.13;
+
+      slide.style.transform = `translate3d(0, ${y}%, 0) scale(${scale})`;
+      slide.style.filter = `brightness(${brightness})`;
+      slide.style.zIndex = String(index + 1);
+    });
+
+    if (progressBar) {
+      progressBar.style.transform = `scaleY(${progress})`;
+    }
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  mobileQuery.addEventListener?.("change", requestUpdate);
+
+  update();
 }

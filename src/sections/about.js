@@ -1,76 +1,82 @@
 export function renderAbout() {
   return `
-<section id="about" class="section-light" aria-labelledby="about-heading">
-  <div class="max-container section-pad">
+<section id="about" class="about-section" aria-labelledby="about-heading">
 
-    <!-- Top: label + rule -->
-    <div class="reveal" style="margin-bottom:3rem;">
-      <p class="section-subtitle">About</p>
-      <h2 id="about-heading" class="section-title" style="color:var(--color-matte-black);max-width:640px;line-height:1.1;">
-        Building Businesses.<br>Creating Conversations.
-      </h2>
-      <div class="gold-rule" style="background:var(--color-champagne-gold);"></div>
-    </div>
+  <div class="about-bg-word" aria-hidden="true">
+    <span>WASAM</span>
+    <span>CHAUDHRY</span>
+  </div>
 
-    <!-- Two-column layout -->
-    <div style="display:grid;grid-template-columns:1fr;gap:4rem;align-items:start;" class="lg-two-col">
+  <div class="about-layout">
 
-      <!-- Left: editorial image placeholder -->
-      <div class="reveal" style="order:2;">
-        <div class="placeholder-block"
-             style="width:100%;aspect-ratio:4/5;max-width:520px;background:var(--color-dark-charcoal);"
-             role="img"
-             aria-label="Editorial photo of Wasam Chaudhry – placeholder">
-          <div style="position:absolute;inset:0;background:linear-gradient(145deg,rgba(184,154,94,0.07) 0%,transparent 60%);"></div>
-          <div style="position:absolute;top:1.5rem;left:1.5rem;right:1.5rem;bottom:1.5rem;border:1px solid rgba(184,154,94,0.15);pointer-events:none;"></div>
-          <div class="placeholder-icon" style="width:3rem;height:3rem;border-color:rgba(184,154,94,0.4);color:rgba(184,154,94,0.6);">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-          </div>
-          <p class="placeholder-label" style="color:rgba(184,154,94,0.7);">Editorial Portrait Placeholder</p>
+    <div class="about-visual reveal-on-scroll">
+      <div class="about-image-shell">
+        <!-- Temporary CEO placeholder image. Replace with Wasam Chaudhry's final portrait later. -->
+        <img
+          src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1400&q=80"
+          alt="Executive portrait placeholder"
+          loading="lazy"
+          decoding="async"
+          onerror="this.closest('.about-image-shell').classList.add('image-missing'); this.style.display='none';"
+        />
+        <div class="about-image-fallback" aria-hidden="true">
+          <span>WASAM CHAUDHRY</span>
+        </div>
+        
+        <div class="about-image-badges" aria-hidden="true">
+          <span>Founder of Autolinx</span>
+          <span>Executive Producer</span>
+          <span>Global Operator</span>
         </div>
       </div>
+      <div class="about-vertical-label" aria-hidden="true">EXECUTIVE PROFILE</div>
+    </div>
 
-      <!-- Right: bio text -->
-      <div class="reveal" style="order:1;">
-
-        <p style="font-family:var(--font-serif);font-size:clamp(1.2rem,2.5vw,1.5rem);font-style:italic;color:var(--color-matte-black);margin-bottom:2rem;line-height:1.5;">
-          &ldquo;The right connection, at the right moment, can change everything.&rdquo;
-        </p>
-
-        <div style="display:flex;flex-direction:column;gap:1.25rem;font-size:1rem;line-height:1.8;color:rgba(10,10,10,0.8);">
-
-          <p>
-            Wasam Chaudhry is an entrepreneur, executive producer, and international business operator with a career built on creating meaningful connections across industries and borders.
-          </p>
-
-          <p>
-            As the founder of <strong>Autolinx</strong>, Wasam leads a specialised compliance and automotive consulting operation serving international markets — bringing precision, integrity, and global perspective to every transaction.
-          </p>
-
-          <p>
-            As executive producer of <strong>The ANSWER</strong> and contributor to <strong>Focus TV</strong>, Wasam has built a credible presence in the media and content space — producing conversations that matter and giving a platform to voices worth amplifying.
-          </p>
-
-          <p>
-            With a network spanning Australia, Japan, Singapore, Indonesia, the UAE, the USA, East Timor, and Hong Kong, Wasam operates at the intersection of culture, commerce, and connection.
-          </p>
-
-        </div>
-
-        <div style="margin-top:2.5rem;padding:1.75rem;background:rgba(10,10,10,0.05);border-left:2px solid var(--color-champagne-gold);">
-          <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--color-champagne-gold);margin-bottom:0.75rem;font-family:var(--font-sans);">Roles</p>
-          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-            ${['Founder – Autolinx','Executive Producer – The ANSWER','Contributor – Focus TV','International Business Operator','Automotive Compliance Specialist','Media Creator & Connector'].map(r => `
-            <span style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:1px solid rgba(10,10,10,0.15);padding:0.3rem 0.75rem;font-family:var(--font-sans);color:rgba(10,10,10,0.7);">${r}</span>
-            `).join('')}
-          </div>
-        </div>
-
+    <div class="about-content reveal-on-scroll">
+      <div class="about-kicker">
+        <span class="about-kicker-line"></span>
+        <span class="about-kicker-index">01</span>
+        <span class="about-kicker-text">ABOUT ME</span>
       </div>
 
+      <h2 id="about-heading">The vision behind the name.</h2>
+
+      <p class="about-subtitle">Entrepreneur &bull; Executive Producer &bull; Automotive Specialist &bull; Connector</p>
+
+      <div class="about-copy">
+        <p>Wasam Chaudhry is an <strong><em>entrepreneur</em></strong> and <strong><em>executive producer</em></strong> with a presence shaped by <strong><em>business</em></strong>, <strong><em>media</em></strong>, <strong><em>automotive culture</em></strong>, and <strong><em>international relationships</em></strong>.</p>
+        <p>As the <strong><em>founder of Autolinx</em></strong> and <strong><em>executive producer of The ANSWER</em></strong>, he works across <strong><em>commerce</em></strong>, <strong><em>content</em></strong>, <strong><em>compliance</em></strong>, and <strong><em>global opportunity</em></strong> with a calm executive mindset.</p>
+        <p>His personal brand is built around <strong><em>credibility</em></strong>, <strong><em>meaningful conversations</em></strong>, and the ability to <strong><em>connect people, ideas, and opportunities</em></strong> across borders.</p>
+      </div>
+
+      <a href="#contact" class="btn-gold about-cta">
+        LET&rsquo;S MAKE MAGIC TOGETHER
+      </a>
     </div>
+
+    <div class="about-credentials reveal-on-scroll" aria-label="Key roles and credentials">
+      <div class="credential">
+        <span aria-hidden="true">01</span>
+        <strong>Founder of Autolinx</strong>
+      </div>
+      <div class="credential">
+        <span aria-hidden="true">02</span>
+        <strong>Executive Producer of The ANSWER</strong>
+      </div>
+      <div class="credential">
+        <span aria-hidden="true">03</span>
+        <strong>International Business Operator</strong>
+      </div>
+      <div class="credential">
+        <span aria-hidden="true">04</span>
+        <strong>Compliance Specialist</strong>
+      </div>
+      <div class="credential">
+        <span aria-hidden="true">05</span>
+        <strong>Media &amp; Content Creator</strong>
+      </div>
+    </div>
+
   </div>
 </section>
 `;
