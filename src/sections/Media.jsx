@@ -19,18 +19,27 @@ const Media = () => {
         </p>
       </div>
 
-      <div className="media-layout">
+      <div className="media-studio">
         <article className="media-feature reveal-on-scroll">
           <div className="media-feature-visual">
+            <div className="media-studio-lines" aria-hidden="true"></div>
+
             <div className="media-play-button" aria-hidden="true">
               <span></span>
             </div>
-            <p className="media-feature-label">Featured Platform</p>
+
+            <div className="media-feature-badge">
+              Featured Platform
+            </div>
           </div>
 
           <div className="media-feature-content">
-            <p className="media-eyebrow">Executive Production / Conversations / Media Presence</p>
+            <p className="media-eyebrow">
+              Executive Production / Conversations / Media Presence
+            </p>
+
             <h3>The ANSWER</h3>
+
             <p>
               A platform shaped around meaningful conversations, purposeful storytelling, and high-value media presence.
             </p>
@@ -41,11 +50,12 @@ const Media = () => {
           </div>
         </article>
 
-        <aside className="media-rail reveal-on-scroll">
-          <p className="media-rail-label">Media Direction</p>
+        <aside className="media-editorial-rail reveal-on-scroll">
+          <p>Media Direction</p>
           <h4>Built for conversations that create presence.</h4>
+          <span></span>
           <p>
-            This section is designed to support interviews, podcast moments, and future content releases without overwhelming the personal brand.
+            A refined space for interviews, podcast moments, and future content releases without overpowering the personal brand.
           </p>
         </aside>
       </div>
