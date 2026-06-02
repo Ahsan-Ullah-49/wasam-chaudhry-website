@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import Header from "./components/Header";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
-import Companies from "./sections/Companies";
+// import Companies from "./sections/Companies";
+import Media from "./sections/Media";
 import ClickSpark from "./components/ClickSpark";
 
 // Import utilities for global vanilla behaviors we didn't migrate to React
@@ -37,7 +38,8 @@ function App() {
       <main id="main-content">
         <Hero />
         <About />
-        <Companies />
+        <Media />
+        {/* <Companies /> is paused until final client content is ready. */}
       </main>
     </ClickSpark>
   );
