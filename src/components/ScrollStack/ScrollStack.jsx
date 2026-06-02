@@ -1,176 +1,125 @@
 import React, { useRef, useEffect, Children } from 'react';
 import './ScrollStack.css';
 
-/**
- * ScrollStackItem — wrapper for each card inside ScrollStack.
- * The `itemClassName` is applied to the outer scroll-stack-card div.
- */
 export const ScrollStackItem = ({ children, itemClassName = '' }) => {
-  // Rendered inside ScrollStack via cloneElement; the className is passed as a prop.
-  // We return children as-is so ScrollStack can wrap them.
   return <>{children}</>;
 };
-
 ScrollStackItem.displayName = 'ScrollStackItem';
 
-/**
- * ScrollStack — cinematic stacking scroll component.
- *
- * When useWindowScroll={true} the section itself has extra height
- * and a sticky inner viewport so the main page scroll drives the animation.
- * No nested scroll containers, no scroll trapping.
- */
 const ScrollStack = ({
   children,
   className = '',
-  itemDistance = 100,     // svh units of scroll budget per card transition
-  itemScale = 0.035,      // scale reduction applied to cards as they get covered
-  itemStackDistance = 34, // unused visual tweak (kept for API compatibility)
-  stackPosition = '18%',  // unused (kept for API compatibility)
-  scaleEndPosition = '8%',// unused (kept for API compatibility)
-  baseScale = 0.86,       // unused (kept for API compatibility)
-  rotationAmount = 0,     // rotation applied while card enters
-  blurAmount = 0,         // blur applied as cards get covered
+  itemDistance = 100,
+  itemScale = 0.03,
+  itemStackDistance = 30,
+  stackPosition = '20%',
+  scaleEndPosition = '10%',
+  baseScale = 0.85,
+  rotationAmount = 0,
+  blurAmount = 0.6,
   useWindowScroll = false,
 }) => {
-  const scrollerRef = useRef(null);
-  const cardRefs   = useRef([]);
-
+  const containerRef = useRef(null);
+  const cardRefs = useRef([]);
   const childArray = Children.toArray(children);
-  const cardCount  = childArray.length;
-
-  // ── collect itemClassName from each ScrollStackItem ─────────────────────────
-  const itemClassNames = childArray.map(child => {
-    if (child && child.props) return child.props.itemClassName || '';
-    return '';
-  });
 
   useEffect(() => {
-    const scroller = scrollerRef.current;
+    let animationFrameId;
+    const scroller = containerRef.current;
     if (!scroller) return;
 
-    const prefersReducedMotion =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const updateCardTransforms = () => {
+      const allCards = cardRefs.current.filter(Boolean);
+      if (!allCards.length) return;
 
-    const allCards = cardRefs.current.filter(Boolean);
-    if (!allCards.length) return;
-
-    // ── Reset helper ──────────────────────────────────────────────────────────
-    const resetCards = () => {
-      allCards.forEach(card => {
-        card.style.transform = '';
-        card.style.filter    = '';
-        card.style.zIndex    = '';
-      });
-    };
-
-    // ── Mobile / reduced-motion: plain stacked layout ─────────────────────────
-    const mq = window.matchMedia('(max-width: 768px)');
-    if (prefersReducedMotion || mq.matches) {
-      resetCards();
-      return;
-    }
-
-    // ── Desktop animated update ───────────────────────────────────────────────
-    const update = () => {
-      // Re-check breakpoint on every tick (handles resize)
-      if (window.matchMedia('(max-width: 768px)').matches) {
-        resetCards();
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        allCards.forEach((card) => {
+          card.style.transform = '';
+          card.style.filter = '';
+          card.style.position = '';
+          card.style.top = '';
+          card.style.marginBottom = '';
+          card.style.zIndex = '';
+        });
         return;
       }
 
-      const rect          = scroller.getBoundingClientRect();
-      const scrollerH     = scroller.offsetHeight;
-      const viewportH     = window.innerHeight;
-      const scrollable    = scrollerH - viewportH;
-      const scrolled      = -rect.top;
-      const rawProgress   = scrollable > 0 ? scrolled / scrollable : 0;
-      const progress      = Math.max(0, Math.min(1, rawProgress));
+      const stackYStr = stackPosition.toString();
+      const stackYOffset = stackYStr.includes('%')
+        ? scroller.offsetHeight * (parseFloat(stackYStr) / 100)
+        : parseFloat(stackYStr);
 
-      // Map 0-1 progress across (cardCount - 1) transitions
-      const cardProgress  = progress * (cardCount - 1);
+      allCards.forEach((card, index) => {
+        const topVal = stackYStr.includes('%') ? stackYStr : `${stackYStr}px`;
+        card.style.position = 'sticky';
+        card.style.top = `calc(${topVal} + ${index * itemStackDistance}px)`;
+        card.style.marginBottom = `${itemDistance}px`;
+        card.style.zIndex = index + 1;
+        card.style.transformOrigin = 'top center';
+        card.style.willChange = 'transform, filter';
 
-      allCards.forEach((card, i) => {
-        if (!card) return;
+        if (index < allCards.length - 1) {
+          const nextCard = allCards[index + 1];
+          const scrollerRect = scroller.getBoundingClientRect();
+          const nextRect = nextCard.getBoundingClientRect();
+          
+          const nextTopRelative = nextRect.top - scrollerRect.top;
+          const nextTargetY = stackYOffset + ((index + 1) * itemStackDistance);
+          
+          const distanceToNextSticky = nextTopRelative - nextTargetY;
+          const maxDist = itemDistance + nextCard.offsetHeight * 0.8;
+          
+          let progress = 0;
+          if (distanceToNextSticky <= 0) {
+            progress = 1;
+          } else if (distanceToNextSticky < maxDist) {
+            progress = 1 - (distanceToNextSticky / maxDist);
+          }
 
-        // localP: negative means card hasn't appeared yet; 0 = active; positive = being covered
-        const localP   = cardProgress - i;
+          const targetScale = 1 - progress * itemScale;
+          const scale = Math.max(baseScale, targetScale);
+          const blur = progress * blurAmount;
+          const rotate = progress * rotationAmount;
 
-        let translateY = 0;
-        let scale      = 1;
-        let blurVal    = 0;
-        let rotate     = 0;
-
-        if (i === 0) {
-          // First card starts fully visible; only gets covered/scaled
-          translateY = 0;
-        } else if (localP <= -1) {
-          // Card hasn't started entering yet — park below
-          translateY = 110;
-        } else if (localP < 0) {
-          // Card is animating in from the bottom
-          translateY = Math.abs(localP) * 110;
-          if (rotationAmount) rotate = Math.abs(localP) * rotationAmount;
+          card.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
+          card.style.filter = blur > 0 ? `blur(${blur}px)` : 'none';
         } else {
-          // Card is active or being covered by the next card
-          translateY = 0;
+          card.style.transform = 'scale(1) rotate(0deg)';
+          card.style.filter = 'none';
         }
-
-        // Cards that are covered scale down and optionally blur
-        if (localP > 0) {
-          const coverP = Math.min(localP, 1);
-          scale        = 1 - coverP * itemScale;
-          if (blurAmount > 0) blurVal = coverP * blurAmount;
-        }
-
-        card.style.zIndex    = String(i + 1);
-        card.style.transform = `translateY(${translateY}%) scale(${scale}) rotate(${rotate}deg)`;
-        card.style.filter    = blurVal > 0 ? `blur(${blurVal}px)` : 'none';
       });
     };
 
-    const scrollTarget = useWindowScroll ? window : scroller;
-    scrollTarget.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    update();
-
-    const mqHandler = () => {
-      if (mq.matches) resetCards();
-      else update();
+    const handleScroll = () => {
+      animationFrameId = requestAnimationFrame(updateCardTransforms);
     };
-    mq.addEventListener('change', mqHandler);
+
+    scroller.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    updateCardTransforms();
+
+    setTimeout(updateCardTransforms, 100);
 
     return () => {
-      scrollTarget.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-      mq.removeEventListener('change', mqHandler);
+      scroller.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      cancelAnimationFrame(animationFrameId);
     };
-  }, [cardCount, itemScale, blurAmount, rotationAmount, useWindowScroll]);
-
-  // Total height = 100svh (viewport for sticky) + scroll budget for all transitions
-  // itemDistance = svh units per transition, (cardCount-1) transitions
-  const scrollBudget = (cardCount - 1) * itemDistance;
-  const totalHeight  = `calc(100svh + ${scrollBudget}svh)`;
+  }, [itemDistance, itemScale, itemStackDistance, stackPosition, blurAmount, rotationAmount, baseScale]);
 
   return (
-    <div
-      ref={scrollerRef}
-      className={`scroll-stack-scroller ${className}`}
-      style={useWindowScroll ? { height: totalHeight } : undefined}
-    >
+    <div ref={containerRef} className={`scroll-stack-scroller ${className}`}>
       <div className="scroll-stack-inner">
-        <div className="scroll-stack-stage">
-          {childArray.map((child, i) => (
-            <div
-              key={i}
-              ref={el => { cardRefs.current[i] = el; }}
-              className={`scroll-stack-card ${itemClassNames[i]}`}
-            >
-              {/* Render the actual child content (unwrap ScrollStackItem) */}
-              {child && child.props ? child.props.children : child}
-            </div>
-          ))}
-        </div>
+        {childArray.map((child, i) => (
+          <div
+            key={i}
+            ref={(el) => (cardRefs.current[i] = el)}
+            className={`scroll-stack-card ${child.props?.itemClassName || ''}`}
+          >
+            {child.props ? child.props.children : child}
+          </div>
+        ))}
       </div>
     </div>
   );

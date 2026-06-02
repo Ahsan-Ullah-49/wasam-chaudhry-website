@@ -39,7 +39,7 @@
 html,
 body {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html {
@@ -1463,34 +1463,22 @@ a { text-decoration: none; }
 
 .companies-section {
   position: relative;
-  overflow: clip;
+  overflow: hidden;
+  padding: clamp(96px, 10vw, 140px) 5%;
   background:
-    radial-gradient(circle at 76% 18%, rgba(184, 154, 94, 0.12), transparent 30%),
+    radial-gradient(circle at 78% 18%, rgba(184, 154, 94, 0.12), transparent 30%),
     radial-gradient(circle at 16% 86%, rgba(242, 240, 235, 0.045), transparent 30%),
     linear-gradient(180deg, #0A0A0A 0%, #111111 48%, #0A0A0A 100%);
   color: var(--color-off-white);
 }
 
-.companies-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  background-image:
-    linear-gradient(rgba(242, 240, 235, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(242, 240, 235, 0.06) 1px, transparent 1px);
-  background-size: 78px 78px;
-}
-
-/* Ghost word */
 .companies-bg-word {
   position: absolute;
   right: -4vw;
-  top: 8%;
+  top: 6%;
   z-index: 0;
   font-family: var(--font-serif);
-  font-size: clamp(7rem, 17vw, 18rem);
+  font-size: clamp(6rem, 15vw, 16rem);
   line-height: 0.85;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1499,14 +1487,12 @@ a { text-decoration: none; }
   user-select: none;
 }
 
-/* Section header */
 .companies-header {
   position: relative;
   z-index: 2;
-  max-width: 780px;
-  margin: 0 auto;
+  max-width: 760px;
+  margin: 0 auto clamp(48px, 6vw, 72px);
   text-align: center;
-  padding: clamp(100px, 10vw, 150px) 5% clamp(50px, 6vw, 80px);
 }
 
 .companies-kicker {
@@ -1532,7 +1518,7 @@ a { text-decoration: none; }
 .companies-header h2 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(3.1rem, 7vw, 7rem);
+  font-size: clamp(3rem, 7vw, 6.5rem);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: 0.04em;
@@ -1540,56 +1526,82 @@ a { text-decoration: none; }
   color: var(--color-off-white);
 }
 
-.companies-intro {
-  max-width: 660px;
-  margin: 24px auto 0;
+.companies-header > p:last-child {
+  max-width: 640px;
+  margin: 22px auto 0;
   font-family: var(--font-sans);
   font-size: 0.98rem;
   line-height: 1.8;
   color: rgba(242, 240, 235, 0.7);
 }
 
-/* ScrollStack overrides for companies */
-.companies-scroll-stack.scroll-stack-scroller {
+.companies-stack-viewport {
+  position: relative;
+  z-index: 2;
   width: 100%;
+  height: 100vh;
+  min-height: 760px;
+  max-height: 980px;
+  overflow: hidden;
+}
+
+.companies-scroll-stack {
+  height: 100%;
+}
+
+.companies-scroll-stack.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.companies-scroll-stack.scroll-stack-scroller::-webkit-scrollbar {
+  display: none;
 }
 
 .companies-scroll-stack .scroll-stack-inner {
-  /* Extra padding inside sticky viewport so cards don't touch edges */
-  padding: clamp(60px, 6vw, 100px) 5% clamp(30px, 4vw, 60px);
-}
-
-.companies-scroll-stack .scroll-stack-stage {
-  max-width: 1320px;
-  margin: 0 auto;
+  padding: 20vh 0 50rem;
+  min-height: 100vh;
 }
 
 .companies-scroll-stack .scroll-stack-card {
-  /* Cards fill sticky viewport minus header + footer padding */
-  inset: clamp(60px, 6vw, 100px) 5% clamp(30px, 4vw, 60px);
+  width: min(100%, 1280px);
+  height: clamp(520px, 68vh, 680px);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  border-radius: clamp(28px, 4vw, 44px);
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
 }
-
-/* ── Card chrome ─────────────────────────────────────────── */
 
 .company-card {
+  position: relative;
+  width: 100%;
   height: 100%;
+  border-radius: inherit;
   overflow: hidden;
-  border-radius: clamp(28px, 4vw, 44px);
 }
 
-.company-card-inner {
+.company-card-content {
   position: relative;
+  width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: inherit;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.9fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.82fr);
   align-items: center;
-  gap: clamp(32px, 6vw, 82px);
-  padding: clamp(34px, 5vw, 72px);
+  gap: clamp(30px, 5vw, 70px);
+  padding: clamp(34px, 5vw, 64px);
+  border-radius: inherit;
   background:
     linear-gradient(135deg, rgba(242, 240, 235, 0.09), rgba(242, 240, 235, 0.025)),
-    radial-gradient(circle at 82% 24%, rgba(184, 154, 94, 0.2), transparent 30%),
+    radial-gradient(circle at 82% 24%, rgba(184, 154, 94, 0.18), transparent 30%),
     linear-gradient(145deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
   border: 1px solid rgba(184, 154, 94, 0.24);
   box-shadow:
@@ -1597,7 +1609,7 @@ a { text-decoration: none; }
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.company-card-inner::before {
+.company-card-content::before {
   content: "";
   position: absolute;
   inset: 18px;
@@ -1606,28 +1618,13 @@ a { text-decoration: none; }
   pointer-events: none;
 }
 
-.company-card-inner::after {
-  content: "";
-  position: absolute;
-  right: -8%;
-  bottom: -18%;
-  width: 48%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: rgba(184, 154, 94, 0.08);
-  filter: blur(12px);
-  pointer-events: none;
-}
-
-/* ── Copy column ─────────────────────────────────────────── */
-
 .company-copy {
   position: relative;
   z-index: 3;
   max-width: 620px;
 }
 
-.company-count {
+.company-index {
   margin: 0;
   font-family: var(--font-sans);
   font-size: 0.72rem;
@@ -1637,9 +1634,9 @@ a { text-decoration: none; }
 }
 
 .company-category {
-  margin: 18px 0 0;
+  margin: 16px 0 0;
   font-family: var(--font-sans);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   letter-spacing: 0.22em;
   line-height: 1.6;
   text-transform: uppercase;
