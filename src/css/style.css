@@ -1458,15 +1458,15 @@ a { text-decoration: none; }
 
 
 /* ════════════════════════════════════════════════════════════
-   COMPANIES / VENTURES SECTION
+   COMPANIES / VENTURES SECTION  — ScrollStack rebuild
    ════════════════════════════════════════════════════════════ */
 
 .companies-section {
   position: relative;
-  height: 420svh;
+  overflow: clip;
   background:
-    radial-gradient(circle at 78% 18%, rgba(184, 154, 94, 0.11), transparent 28%),
-    radial-gradient(circle at 18% 82%, rgba(242, 240, 235, 0.045), transparent 28%),
+    radial-gradient(circle at 76% 18%, rgba(184, 154, 94, 0.12), transparent 30%),
+    radial-gradient(circle at 16% 86%, rgba(242, 240, 235, 0.045), transparent 30%),
     linear-gradient(180deg, #0A0A0A 0%, #111111 48%, #0A0A0A 100%);
   color: var(--color-off-white);
 }
@@ -1476,32 +1476,21 @@ a { text-decoration: none; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.12;
+  opacity: 0.08;
   background-image:
-    linear-gradient(rgba(242, 240, 235, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(242, 240, 235, 0.05) 1px, transparent 1px);
-  background-size: 72px 72px;
+    linear-gradient(rgba(242, 240, 235, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 240, 235, 0.06) 1px, transparent 1px);
+  background-size: 78px 78px;
 }
 
-.companies-pin {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow: hidden;
-  isolation: isolate;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(78px, 8vw, 104px) 5% clamp(32px, 4vw, 44px);
-}
-
+/* Ghost word */
 .companies-bg-word {
   position: absolute;
-  right: -3vw;
-  top: 8vh;
+  right: -4vw;
+  top: 8%;
   z-index: 0;
   font-family: var(--font-serif);
-  font-size: clamp(7rem, 16vw, 18rem);
+  font-size: clamp(7rem, 17vw, 18rem);
   line-height: 0.85;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1510,35 +1499,40 @@ a { text-decoration: none; }
   user-select: none;
 }
 
-.companies-stage-label {
-  position: absolute;
-  top: clamp(22px, 4vw, 42px);
-  left: 5%;
-  z-index: 20;
+/* Section header */
+.companies-header {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+  padding: clamp(100px, 10vw, 150px) 5% clamp(50px, 6vw, 80px);
 }
 
-.companies-stage-label p {
-  display: flex;
+.companies-kicker {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 14px;
-  margin: 0 0 10px;
+  margin: 0 0 18px;
   font-family: var(--font-sans);
   font-size: 0.68rem;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--color-champagne-gold);
 }
 
-.companies-stage-label p span {
-  width: 42px;
+.companies-kicker span {
+  width: 46px;
   height: 1px;
   background: var(--color-champagne-gold);
+  display: block;
 }
 
-.companies-stage-label h2 {
+.companies-header h2 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2.1rem, 4vw, 4.4rem);
+  font-size: clamp(3.1rem, 7vw, 7rem);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: 0.04em;
@@ -1546,61 +1540,60 @@ a { text-decoration: none; }
   color: var(--color-off-white);
 }
 
-.companies-progress {
-  position: absolute;
-  left: clamp(18px, 3vw, 42px);
-  top: 24%;
-  bottom: 16%;
-  width: 1px;
-  z-index: 30;
-  background: rgba(242, 240, 235, 0.13);
+.companies-intro {
+  max-width: 660px;
+  margin: 24px auto 0;
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: rgba(242, 240, 235, 0.7);
 }
 
-.companies-progress span {
-  display: block;
+/* ScrollStack overrides for companies */
+.companies-scroll-stack.scroll-stack-scroller {
   width: 100%;
-  height: 100%;
-  transform: scaleY(0);
-  transform-origin: top;
-  background: var(--color-champagne-gold);
 }
 
-.companies-stage {
-  position: relative;
-  z-index: 5;
-  width: min(100%, 1320px);
-  height: min(72svh, 740px);
-  margin-top: clamp(34px, 5vw, 62px);
+.companies-scroll-stack .scroll-stack-inner {
+  /* Extra padding inside sticky viewport so cards don't touch edges */
+  padding: clamp(60px, 6vw, 100px) 5% clamp(30px, 4vw, 60px);
 }
+
+.companies-scroll-stack .scroll-stack-stage {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.companies-scroll-stack .scroll-stack-card {
+  /* Cards fill sticky viewport minus header + footer padding */
+  inset: clamp(60px, 6vw, 100px) 5% clamp(30px, 4vw, 60px);
+}
+
+/* ── Card chrome ─────────────────────────────────────────── */
 
 .company-card {
-  position: absolute;
-  inset: 0;
-  transform: translate3d(0, 115%, 0) scale(1);
-  will-change: transform, filter;
-}
-
-.company-card:first-child {
-  transform: translate3d(0, 0, 0) scale(1);
+  height: 100%;
+  overflow: hidden;
+  border-radius: clamp(28px, 4vw, 44px);
 }
 
 .company-card-inner {
   position: relative;
   height: 100%;
   overflow: hidden;
-  border-radius: clamp(28px, 4vw, 44px);
+  border-radius: inherit;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.9fr);
   align-items: center;
   gap: clamp(32px, 6vw, 82px);
   padding: clamp(34px, 5vw, 72px);
   background:
-    linear-gradient(135deg, rgba(242, 240, 235, 0.08), rgba(242, 240, 235, 0.025)),
+    linear-gradient(135deg, rgba(242, 240, 235, 0.09), rgba(242, 240, 235, 0.025)),
     radial-gradient(circle at 82% 24%, rgba(184, 154, 94, 0.2), transparent 30%),
-    linear-gradient(145deg, rgba(26, 26, 26, 0.96), rgba(10, 10, 10, 0.98));
-  border: 1px solid rgba(184, 154, 94, 0.22);
+    linear-gradient(145deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
+  border: 1px solid rgba(184, 154, 94, 0.24);
   box-shadow:
-    0 38px 110px rgba(0, 0, 0, 0.55),
+    0 38px 110px rgba(0, 0, 0, 0.56),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -1608,7 +1601,7 @@ a { text-decoration: none; }
   content: "";
   position: absolute;
   inset: 18px;
-  border: 1px solid rgba(242, 240, 235, 0.06);
+  border: 1px solid rgba(242, 240, 235, 0.065);
   border-radius: calc(clamp(28px, 4vw, 44px) - 14px);
   pointer-events: none;
 }
@@ -1625,6 +1618,8 @@ a { text-decoration: none; }
   filter: blur(12px);
   pointer-events: none;
 }
+
+/* ── Copy column ─────────────────────────────────────────── */
 
 .company-copy {
   position: relative;
@@ -1683,6 +1678,8 @@ a { text-decoration: none; }
   color: rgba(184, 154, 94, 0.82);
 }
 
+/* ── Monogram visual column ──────────────────────────────── */
+
 .company-mark-wrap {
   position: relative;
   z-index: 3;
@@ -1714,6 +1711,7 @@ a { text-decoration: none; }
 .company-orbit::after {
   inset: 32%;
   background: rgba(242, 240, 235, 0.035);
+  border: none;
 }
 
 .company-mark {
@@ -1724,8 +1722,7 @@ a { text-decoration: none; }
   display: grid;
   place-items: center;
   border-radius: 38px;
-  background:
-    linear-gradient(145deg, #F2F0EB, #DCD4C5);
+  background: linear-gradient(145deg, #F2F0EB, #DCD4C5);
   border: 1px solid rgba(255, 255, 255, 0.58);
   box-shadow:
     22px 28px 70px rgba(0, 0, 0, 0.38),
@@ -1737,6 +1734,8 @@ a { text-decoration: none; }
   letter-spacing: 0.14em;
   color: var(--color-matte-black);
 }
+
+/* ── Metadata footer row ─────────────────────────────────── */
 
 .company-meta {
   position: absolute;
@@ -1758,58 +1757,59 @@ a { text-decoration: none; }
   color: rgba(242, 240, 235, 0.42);
 }
 
+/* ── Section bottom padding after ScrollStack ────────────── */
+
+.companies-section > .companies-scroll-stack {
+  /* Padding is baked into the .scroll-stack-card insets;
+     give the section breathing room after the stack exits */
+}
+
+/* ════════════════════════════════════════════════════════════
+   MOBILE  — stacked normal flow cards
+   ════════════════════════════════════════════════════════════ */
+
 @media (max-width: 768px) {
-  .companies-section,
-  .companies-section.companies-fallback {
-    height: auto;
+  .companies-section {
+    padding-bottom: clamp(60px, 8vw, 100px);
   }
 
-  .companies-pin {
-    position: relative;
-    height: auto;
-    min-height: auto;
-    overflow: visible;
-    display: block;
-    padding: 86px 6%;
+  .companies-header {
+    padding: 86px 6% 48px;
+    text-align: left;
   }
 
-  .companies-stage-label {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin-bottom: 34px;
+  .companies-kicker {
+    justify-content: flex-start;
   }
 
-  .companies-progress {
-    display: none;
+  .companies-header h2 {
+    font-size: clamp(2.75rem, 13vw, 4.8rem);
   }
 
   .companies-bg-word {
-    font-size: clamp(4.6rem, 24vw, 7rem);
-    right: -8%;
-    top: 40px;
+    top: 2%;
+    right: -12%;
+    font-size: clamp(4.8rem, 24vw, 7.2rem);
   }
 
-  .companies-stage {
-    width: 100%;
-    height: auto;
-    display: grid;
-    gap: 24px;
-    margin-top: 0;
+  /* ScrollStack mobile: plain vertical list */
+  .companies-scroll-stack .scroll-stack-inner {
+    padding: 0 6%;
+  }
+
+  .companies-scroll-stack .scroll-stack-card {
+    inset: auto;
   }
 
   .company-card {
-    position: relative;
-    inset: auto;
-    transform: none !important;
-    filter: none !important;
+    border-radius: 28px;
   }
 
   .company-card-inner {
     min-height: auto;
     grid-template-columns: 1fr;
     gap: 32px;
-    padding: 30px 24px 92px;
+    padding: 30px 24px 96px;
     border-radius: 28px;
   }
 
@@ -1820,6 +1820,16 @@ a { text-decoration: none; }
   .company-mark-wrap {
     min-height: 240px;
     order: -1;
+  }
+
+  .company-orbit {
+    width: 230px;
+  }
+
+  .company-mark {
+    width: 150px;
+    height: 150px;
+    font-size: clamp(2rem, 8vw, 2.8rem);
   }
 
   .company-meta {
@@ -1838,8 +1848,25 @@ a { text-decoration: none; }
   }
 
   .company-mark {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
   }
+}
+
+.click-spark-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+
+.click-spark-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
 }
 
