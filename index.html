@@ -110,19 +110,11 @@
       onblur="this.style.cssText='position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;'"
     >Skip to main content</a>
 
-    <!-- Header slot — rendered by header.js -->
-    <div id="header-slot"></div>
-
-    <!-- Main content — all page sections rendered by main.js -->
-    <main id="main-content">
-      <!-- Sections are injected here by main.js -->
-    </main>
-
-    <!-- Footer slot — rendered by footer.js -->
-    <div id="footer-slot"></div>
+    <!-- App root -->
+    <div id="root"></div>
 
     <!-- App entry point -->
-    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
 
   </body>
 </html>
