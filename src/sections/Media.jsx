@@ -51,6 +51,8 @@ const Media = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
 
+  const scrollTimeoutRef = useRef(null);
+
   const activePodcast = podcasts[activeIndex];
 
   const goToPrev = () => {
@@ -65,6 +67,40 @@ const Media = () => {
     );
   };
 
+  const handleCarouselScroll = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    window.clearTimeout(scrollTimeoutRef.current);
+
+    scrollTimeoutRef.current = window.setTimeout(() => {
+      const cards = Array.from(
+        carousel.querySelectorAll(".media-podcast-card")
+      );
+
+      const carouselRect = carousel.getBoundingClientRect();
+      const carouselCenter = carouselRect.left + carouselRect.width / 2;
+
+      let closestIndex = activeIndex;
+      let closestDistance = Infinity;
+
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(carouselCenter - cardCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      if (closestIndex !== activeIndex) {
+        setActiveIndex(closestIndex);
+      }
+    }, 120);
+  };
+
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
@@ -77,10 +113,12 @@ const Media = () => {
     });
   }, [activeIndex]);
 
+  useEffect(() => {
+    return () => window.clearTimeout(scrollTimeoutRef.current);
+  }, []);
+
   return (
     <section id="media" className="media-section">
-      <div className="media-bg-word" aria-hidden="true">MEDIA</div>
-
       <div className="media-header reveal-on-scroll">
         <div className="media-kicker">
           <span className="media-kicker-line"></span>
@@ -89,28 +127,30 @@ const Media = () => {
         </div>
 
         <h2>Podcast & Interviews</h2>
-
-        <p>
-          A cinematic space for conversations, interviews, and media moments connected to Wasam Chaudhry’s personal brand and executive production work.
-        </p>
       </div>
 
-      <div className="media-player-wrap reveal-on-scroll">
-        <div className="media-player-info">
-          <p>{activePodcast.category}</p>
-          <h3>{activePodcast.title}</h3>
-          <span>{activePodcast.number} / 07</span>
+      <div className="media-player-stage reveal-on-scroll">
+        <div className="media-bg-word" aria-hidden="true">
+          PODCASTS
         </div>
 
-        <div className="media-main-player">
-          <iframe
-            key={activePodcast.id}
-            src={`https://www.youtube-nocookie.com/embed/${activePodcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
-            title={activePodcast.title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            loading="lazy"
-          ></iframe>
+        <div className="media-player-wrap">
+          <div className="media-player-info">
+            <p>{activePodcast.category}</p>
+            <h3>{activePodcast.title}</h3>
+            <span>{activePodcast.number} / 07</span>
+          </div>
+
+          <div className="media-main-player">
+            <iframe
+              key={activePodcast.id}
+              src={`https://www.youtube-nocookie.com/embed/${activePodcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
+              title={activePodcast.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+            ></iframe>
+          </div>
         </div>
       </div>
 
@@ -124,7 +164,12 @@ const Media = () => {
           ←
         </button>
 
-        <div className="media-carousel" ref={carouselRef} aria-label="Podcast carousel">
+        <div 
+          className="media-carousel" 
+          ref={carouselRef} 
+          onScroll={handleCarouselScroll}
+          aria-label="Podcast carousel"
+        >
           {podcasts.map((podcast, index) => (
             <button
               type="button"
@@ -139,10 +184,11 @@ const Media = () => {
                   alt=""
                   loading="lazy"
                 />
-                <span className="media-podcast-play" aria-hidden="true">
-                  <i></i>
-                </span>
               </div>
+
+              <span className="media-podcast-play" aria-hidden="true">
+                <i></i>
+              </span>
 
               <div className="media-podcast-body">
                 <span>{podcast.number}</span>
