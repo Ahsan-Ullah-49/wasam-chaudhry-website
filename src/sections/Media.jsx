@@ -1,98 +1,172 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/media.css';
 
+// Temporary YouTube podcast placeholders. Replace with Wasam Chaudhry's real media links later.
+const podcasts = [
+  {
+    id: "ky1oHHJ5Ne8",
+    number: "01",
+    title: "Business Mindset & Personal Growth",
+    category: "Podcast Feature",
+  },
+  {
+    id: "gCS0-1YhmPw",
+    number: "02",
+    title: "Building a Personal Brand",
+    category: "Founder Conversation",
+  },
+  {
+    id: "kxLmeUIXXtU",
+    number: "03",
+    title: "Entrepreneurship & Strategy",
+    category: "Business Interview",
+  },
+  {
+    id: "sdd4BST87ks",
+    number: "04",
+    title: "Scaling Vision Into Impact",
+    category: "Executive Dialogue",
+  },
+  {
+    id: "FHamDLiiZxs",
+    number: "05",
+    title: "Fame, Authenticity & Influence",
+    category: "Media Conversation",
+  },
+  {
+    id: "2WUb457Zpm4",
+    number: "06",
+    title: "Partnerships & Creator Economy",
+    category: "Industry Podcast",
+  },
+  {
+    id: "ZJRYFJ_0kKQ",
+    number: "07",
+    title: "Audience, Content & Monetization",
+    category: "Creator Economy",
+  },
+];
+
 const Media = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef(null);
+
+  const activePodcast = podcasts[activeIndex];
+
+  const goToPrev = () => {
+    setActiveIndex((current) =>
+      current === 0 ? podcasts.length - 1 : current - 1
+    );
+  };
+
+  const goToNext = () => {
+    setActiveIndex((current) =>
+      current === podcasts.length - 1 ? 0 : current + 1
+    );
+  };
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const activeCard = carousel.querySelector(".media-podcast-card.is-active");
+    activeCard?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeIndex]);
+
   return (
     <section id="media" className="media-section">
       <div className="media-bg-word" aria-hidden="true">MEDIA</div>
 
       <div className="media-header reveal-on-scroll">
-        <p className="media-kicker">
-          <span></span>
-          MEDIA
-        </p>
+        <div className="media-kicker">
+          <span className="media-kicker-line"></span>
+          <span className="media-kicker-index">03</span>
+          <span className="media-kicker-text">MEDIA</span>
+        </div>
 
-        <h2>Media & Interviews</h2>
+        <h2>Podcast & Interviews</h2>
 
         <p>
-          A curated space for conversations, interviews, and media moments connected to Wasam Chaudhry’s personal brand and executive production work.
+          A cinematic space for conversations, interviews, and media moments connected to Wasam Chaudhry’s personal brand and executive production work.
         </p>
       </div>
 
-      <div className="media-studio">
-        <article className="media-feature reveal-on-scroll">
-          <div className="media-feature-visual">
-            <div className="media-studio-lines" aria-hidden="true"></div>
+      <div className="media-player-wrap reveal-on-scroll">
+        <div className="media-player-info">
+          <p>{activePodcast.category}</p>
+          <h3>{activePodcast.title}</h3>
+          <span>{activePodcast.number} / 07</span>
+        </div>
 
-            <div className="media-play-button" aria-hidden="true">
-              <span></span>
-            </div>
-
-            <div className="media-feature-badge">
-              Featured Platform
-            </div>
-          </div>
-
-          <div className="media-feature-content">
-            <p className="media-eyebrow">
-              Executive Production / Conversations / Media Presence
-            </p>
-
-            <h3>The ANSWER</h3>
-
-            <p>
-              A platform shaped around meaningful conversations, purposeful storytelling, and high-value media presence.
-            </p>
-
-            <a href="#contact" className="btn-gold media-cta">
-              Explore Media
-            </a>
-          </div>
-        </article>
-
-        <aside className="media-editorial-rail reveal-on-scroll">
-          <p>Media Direction</p>
-          <h4>Built for conversations that create presence.</h4>
-          <span></span>
-          <p>
-            A refined space for interviews, podcast moments, and future content releases without overpowering the personal brand.
-          </p>
-        </aside>
+        <div className="media-main-player">
+          <iframe
+            key={activePodcast.id}
+            src={`https://www.youtube-nocookie.com/embed/${activePodcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
+            title={activePodcast.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        </div>
       </div>
 
-      <div className="media-cards">
-        <article className="media-card reveal-on-scroll">
-          <div className="media-card-top">
-            <span>01</span>
-            <p>Media Appearances</p>
-          </div>
-          <h3>Interviews</h3>
-          <p>
-            Future interviews, guest conversations, and professional media features will be highlighted here.
-          </p>
-        </article>
+      <div className="media-carousel-shell">
+        <button
+          className="media-arrow media-arrow-prev"
+          type="button"
+          aria-label="Previous podcast"
+          onClick={goToPrev}
+        >
+          ←
+        </button>
 
-        <article className="media-card reveal-on-scroll">
-          <div className="media-card-top">
-            <span>02</span>
-            <p>Conversations</p>
-          </div>
-          <h3>Podcast Moments</h3>
-          <p>
-            Selected clips and meaningful conversations from Wasam’s media journey will be organized in this space.
-          </p>
-        </article>
+        <div className="media-carousel" ref={carouselRef} aria-label="Podcast carousel">
+          {podcasts.map((podcast, index) => (
+            <button
+              type="button"
+              key={podcast.id}
+              className={`media-podcast-card ${index === activeIndex ? "is-active" : ""}`}
+              onClick={() => setActiveIndex(index)}
+              aria-label={`Play ${podcast.title}`}
+            >
+              <div className="media-podcast-thumb">
+                <img
+                  src={`https://img.youtube.com/vi/${podcast.id}/hqdefault.jpg`}
+                  alt=""
+                  loading="lazy"
+                />
+                <span className="media-podcast-play" aria-hidden="true">
+                  <i></i>
+                </span>
+              </div>
 
-        <article className="media-card reveal-on-scroll">
-          <div className="media-card-top">
-            <span>03</span>
-            <p>Executive Producer</p>
-          </div>
-          <h3>Production Work</h3>
-          <p>
-            A refined look at projects, ideas, and storytelling connected to The ANSWER and future media initiatives.
-          </p>
-        </article>
+              <div className="media-podcast-body">
+                <span>{podcast.number}</span>
+                <p>{podcast.category}</p>
+                <h3>{podcast.title}</h3>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <button
+          className="media-arrow media-arrow-next"
+          type="button"
+          aria-label="Next podcast"
+          onClick={goToNext}
+        >
+          →
+        </button>
+      </div>
+
+      <div className="media-view-more-wrap">
+        <a href="#contact" className="btn-gold media-view-more">
+          View More
+        </a>
       </div>
     </section>
   );

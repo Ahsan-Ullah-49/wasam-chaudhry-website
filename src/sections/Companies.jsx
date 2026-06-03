@@ -25,13 +25,21 @@ const Companies = () => {
 
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 769px)", () => {
+      const setupCompaniesStack = ({
+        endMultiplier,
+        incomingY,
+        previousScale,
+        previousBrightness,
+      }) => {
         gsap.set(cards, {
-          yPercent: 120,
+          position: "absolute",
+          inset: 0,
+          yPercent: incomingY,
           scale: 1,
           autoAlpha: 1,
           filter: "brightness(1)",
           zIndex: (index) => index + 1,
+          clearProps: "opacity",
         });
 
         gsap.set(cards[0], {
@@ -49,7 +57,7 @@ const Companies = () => {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: () => `+=${(cards.length - 1) * window.innerHeight}`,
+            end: () => `+=${(cards.length - 1) * window.innerHeight * endMultiplier}`,
             scrub: 1,
             pin: pin,
             pinSpacing: true,
@@ -74,8 +82,8 @@ const Companies = () => {
           tl.to(
             cards[index - 1],
             {
-              scale: 0.965,
-              filter: "brightness(0.72)",
+              scale: previousScale,
+              filter: `brightness(${previousBrightness})`,
               duration: 1,
               ease: "none",
             },
@@ -95,23 +103,40 @@ const Companies = () => {
           }
         });
 
-        ScrollTrigger.refresh();
+        return tl;
+      };
 
-        return () => {
-          tl.kill();
-        };
+      mm.add("(min-width: 1025px)", () => {
+        const tl = setupCompaniesStack({
+          endMultiplier: 1,
+          incomingY: 118,
+          previousScale: 0.965,
+          previousBrightness: 0.72,
+        });
+        ScrollTrigger.refresh();
+        return () => tl.kill();
+      });
+
+      mm.add("(min-width: 769px) and (max-width: 1024px)", () => {
+        const tl = setupCompaniesStack({
+          endMultiplier: 0.9,
+          incomingY: 112,
+          previousScale: 0.97,
+          previousBrightness: 0.76,
+        });
+        ScrollTrigger.refresh();
+        return () => tl.kill();
       });
 
       mm.add("(max-width: 768px)", () => {
-        gsap.set(cards, {
-          clearProps: "all",
+        const tl = setupCompaniesStack({
+          endMultiplier: 0.78,
+          incomingY: 108,
+          previousScale: 0.975,
+          previousBrightness: 0.8,
         });
-
-        if (progressBar) {
-          gsap.set(progressBar, {
-            clearProps: "all",
-          });
-        }
+        ScrollTrigger.refresh();
+        return () => tl.kill();
       });
 
       return () => {
@@ -123,24 +148,19 @@ const Companies = () => {
 
   return (
     <section id="companies" className="companies-section" ref={sectionRef}>
-      <div className="companies-bg-word" aria-hidden="true">
-        VENTURES
-      </div>
-
       <div className="companies-pin" ref={pinRef}>
+        <div className="companies-bg-word" aria-hidden="true">
+          VENTURES
+        </div>
+        
         <div className="companies-header">
-          <p className="companies-kicker">
-            <span></span>
-            VENTURE STACK
-          </p>
+          <div className="companies-kicker">
+            <span className="companies-kicker-line"></span>
+            <span className="companies-kicker-index">02</span>
+            <span className="companies-kicker-text">COMPANIES</span>
+          </div>
 
           <h2>Business Portfolio</h2>
-
-          <p>
-            A curated look at the ventures connected to Wasam Chaudhry’s
-            personal brand, spanning automotive commerce, media visibility,
-            executive production, and future-facing opportunities.
-          </p>
         </div>
 
         <div className="companies-progress" aria-hidden="true">
@@ -163,21 +183,21 @@ const Companies = () => {
 
                   <p className="company-description">{venture.description}</p>
 
-                  <p className="company-note">
-                    Connected to Wasam Chaudhry’s personal brand.
-                  </p>
+                  <div className="company-actions">
+                    <a
+                      href={venture.websiteUrl}
+                      className="company-visit-btn"
+                      aria-label={`Visit ${venture.name} website`}
+                    >
+                      <span>Visit Website</span>
+                      <i aria-hidden="true">↗</i>
+                    </a>
+                  </div>
                 </div>
 
                 <div className="company-visual" aria-hidden="true">
                   <div className="company-orbit"></div>
                   <div className="company-monogram">{venture.monogram}</div>
-                </div>
-
-                <div className="company-meta" aria-hidden="true">
-                  <span>Personal Brand</span>
-                  <span>Business</span>
-                  <span>Media</span>
-                  <span>Global Opportunity</span>
                 </div>
               </div>
             </article>

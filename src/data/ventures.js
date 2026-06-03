@@ -1,3 +1,4 @@
+// Temporary website placeholders. Replace with real client-approved URLs later.
 export const ventures = [
   {
     id: "autolinx",
@@ -7,6 +8,7 @@ export const ventures = [
     description:
       "A trusted automotive business foundation connected to premium vehicles, compliance awareness, and long-term client relationships.",
     monogram: "ALX",
+    websiteUrl: "#",
   },
   {
     id: "focus-tv",
@@ -16,6 +18,7 @@ export const ventures = [
     description:
       "A media platform built around visibility, conversations, storytelling, and digital audience connection.",
     monogram: "FTV",
+    websiteUrl: "#",
   },
   {
     id: "the-answer",
@@ -25,6 +28,7 @@ export const ventures = [
     description:
       "A content and interview platform shaped around meaningful conversations, media presence, and purposeful storytelling.",
     monogram: "ANS",
+    websiteUrl: "#",
   },
   {
     id: "pear-pressure",
@@ -34,5 +38,6 @@ export const ventures = [
     description:
       "A forward-looking space for future business concepts, creative ideas, strategic opportunities, and emerging collaborations.",
     monogram: "PRP",
+    websiteUrl: "#",
   },
 ];

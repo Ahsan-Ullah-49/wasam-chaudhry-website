@@ -1,10 +1,7 @@
 .companies-section {
   position: relative;
   min-height: 100svh;
-  background:
-    radial-gradient(circle at 78% 18%, rgba(184, 154, 94, 0.12), transparent 30%),
-    radial-gradient(circle at 16% 86%, rgba(242, 240, 235, 0.045), transparent 30%),
-    linear-gradient(180deg, #0A0A0A 0%, #111111 48%, #0A0A0A 100%);
+  background: #0A0A0A;
   color: var(--off-white);
   overflow: hidden;
 }
@@ -15,15 +12,18 @@
   height: 100svh;
   min-height: 760px;
   overflow: hidden;
+  padding: 0 5%;
   display: grid;
-  grid-template-rows: auto 1fr;
-  padding: clamp(78px, 8vw, 104px) 5% clamp(30px, 4vw, 44px);
+  place-items: center;
+  isolation: isolate;
 }
 
 .companies-bg-word {
   position: absolute;
-  right: -4vw;
+  left: 50%;
+  right: auto;
   top: 6%;
+  transform: translateX(-50%);
   z-index: 0;
   font-family: var(--font-serif);
   font-size: clamp(6rem, 15vw, 16rem);
@@ -33,39 +33,54 @@
   color: rgba(242, 240, 235, 0.035);
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .companies-header {
-  position: relative;
+  position: absolute;
+  top: clamp(44px, 6vh, 78px);
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10;
-  max-width: 760px;
-  margin: 0 auto clamp(24px, 4vw, 42px);
+  width: min(90vw, 760px);
   text-align: center;
 }
 
 .companies-kicker {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 14px;
-  margin: 0 0 14px;
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--gold);
+  margin-bottom: 24px;
 }
 
-.companies-kicker span {
-  width: 46px;
+.companies-kicker-line {
+  width: 48px;
   height: 1px;
-  background: var(--gold);
+  background: linear-gradient(90deg, var(--color-champagne-gold), rgba(184, 154, 94, 0.08));
+}
+
+.companies-kicker-index {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: rgba(184, 154, 94, 0.72);
+}
+
+.companies-kicker-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-champagne-gold);
 }
 
 .companies-header h2 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 6vw, 5.8rem);
+  font-size: clamp(2.55rem, 5vw, 5rem);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: 0.04em;
@@ -74,21 +89,23 @@
 }
 
 .companies-header > p:last-child {
-  max-width: 640px;
-  margin: 18px auto 0;
+  max-width: 620px;
+  margin: 14px auto 0;
   font-family: var(--font-sans);
-  font-size: 0.94rem;
-  line-height: 1.75;
-  color: rgba(242, 240, 235, 0.68);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(242, 240, 235, 0.66);
 }
 
 .companies-stage {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  transform: translate(-50%, -50%);
   z-index: 5;
-  width: min(100%, 1280px);
-  height: min(68svh, 680px);
-  min-height: 500px;
-  margin: 0 auto;
+  width: min(92vw, 1240px);
+  height: clamp(430px, 54svh, 590px);
+  min-height: 430px;
 }
 
 .company-card {
@@ -96,7 +113,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: clamp(28px, 4vw, 44px);
+  border-radius: clamp(26px, 4vw, 42px);
   overflow: hidden;
   will-change: transform, filter;
   transform-origin: center center;
@@ -108,59 +125,77 @@
   height: 100%;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.82fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(250px, 0.82fr);
   align-items: center;
   gap: clamp(30px, 5vw, 70px);
-  padding: clamp(34px, 5vw, 64px);
+  padding: clamp(34px, 5vw, 62px);
   border-radius: inherit;
   background:
-    linear-gradient(135deg, rgba(242, 240, 235, 0.09), rgba(242, 240, 235, 0.025)),
-    radial-gradient(circle at 82% 24%, rgba(184, 154, 94, 0.18), transparent 30%),
+    linear-gradient(135deg, rgba(242, 240, 235, 0.1), rgba(242, 240, 235, 0.025)),
+    radial-gradient(circle at 82% 24%, rgba(184, 154, 94, 0.16), transparent 32%),
     linear-gradient(145deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
   border: 1px solid rgba(184, 154, 94, 0.24);
   box-shadow:
     0 38px 110px rgba(0, 0, 0, 0.56),
+    0 24px 70px rgba(184, 154, 94, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.company-card-content::after {
+  content: "";
+  position: absolute;
+  left: clamp(28px, 4vw, 54px);
+  right: clamp(28px, 4vw, 54px);
+  bottom: clamp(24px, 3vw, 34px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(184, 154, 94, 0.5),
+    rgba(242, 240, 235, 0.08),
+    transparent
+  );
+  pointer-events: none;
 }
 
 .company-card-content::before {
   content: "";
   position: absolute;
-  inset: 18px;
+  inset: 16px;
   border: 1px solid rgba(242, 240, 235, 0.065);
-  border-radius: calc(clamp(28px, 4vw, 44px) - 14px);
+  border-radius: calc(clamp(26px, 4vw, 42px) - 12px);
   pointer-events: none;
 }
 
 .company-copy {
   position: relative;
   z-index: 3;
-  max-width: 620px;
+  max-width: 600px;
+  transform: translateY(-12px);
 }
 
 .company-index {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: rgba(184, 154, 94, 0.9);
 }
 
 .company-category {
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   font-family: var(--font-sans);
-  font-size: 0.74rem;
-  letter-spacing: 0.22em;
-  line-height: 1.6;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  line-height: 1.55;
   text-transform: uppercase;
   color: rgba(242, 240, 235, 0.58);
 }
 
 .company-copy h3 {
-  margin: 20px 0 18px;
+  margin: 18px 0 16px;
   font-family: var(--font-serif);
-  font-size: clamp(3.2rem, 6.3vw, 6.4rem);
+  font-size: clamp(2.8rem, 5.7vw, 5.8rem);
   font-weight: 400;
   line-height: 0.9;
   letter-spacing: 0.035em;
@@ -170,23 +205,100 @@
 
 .company-description {
   margin: 0;
-  max-width: 540px;
+  max-width: 520px;
   font-family: var(--font-sans);
-  font-size: clamp(0.96rem, 1.15vw, 1.12rem);
-  line-height: 1.75;
+  font-size: clamp(0.9rem, 1.05vw, 1.04rem);
+  line-height: 1.72;
   color: rgba(242, 240, 235, 0.72);
 }
 
-.company-note {
-  margin: 24px 0 0;
-  padding-left: 18px;
-  border-left: 1px solid rgba(184, 154, 94, 0.52);
+.company-actions {
+  display: flex;
+  align-items: center;
+  margin-top: clamp(22px, 3vw, 34px);
+}
+
+.company-visit-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 154, 94, 0.48);
+  background:
+    linear-gradient(135deg, rgba(184, 154, 94, 0.12), rgba(184, 154, 94, 0.02));
+  color: var(--off-white);
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  line-height: 1.7;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(184, 154, 94, 0.82);
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.company-visit-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: translateY(105%);
+  transition: transform 0.35s ease;
+  z-index: -1;
+}
+
+.company-visit-btn span,
+.company-visit-btn i {
+  position: relative;
+  z-index: 1;
+}
+
+.company-visit-btn i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(184, 154, 94, 0.16);
+  color: var(--gold);
+  font-style: normal;
+  line-height: 1;
+  transition:
+    transform 0.35s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.company-visit-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  color: var(--matte-black);
+  box-shadow: 0 16px 38px rgba(184, 154, 94, 0.22);
+}
+
+.company-visit-btn:hover::before {
+  transform: translateY(0);
+}
+
+.company-visit-btn:hover i {
+  transform: translate(3px, -3px);
+  background: rgba(10, 10, 10, 0.12);
+  color: var(--matte-black);
+}
+
+.company-visit-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
 }
 
 .company-visual {
@@ -194,18 +306,30 @@
   z-index: 3;
   display: grid;
   place-items: center;
-  min-height: 320px;
+  min-height: 260px;
+  transform: translateY(-8px);
+}
+
+.company-visual::before {
+  content: "";
+  position: absolute;
+  width: clamp(240px, 24vw, 380px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 154, 94, 0.12), transparent 64%);
+  filter: blur(8px);
+  pointer-events: none;
 }
 
 .company-orbit {
   position: absolute;
-  width: clamp(210px, 22vw, 340px);
+  width: clamp(190px, 20vw, 310px);
   aspect-ratio: 1;
   border-radius: 50%;
   border: 1px solid rgba(184, 154, 94, 0.28);
   box-shadow:
-    0 0 0 30px rgba(184, 154, 94, 0.035),
-    inset 0 0 60px rgba(184, 154, 94, 0.08);
+    0 0 0 26px rgba(184, 154, 94, 0.035),
+    inset 0 0 56px rgba(184, 154, 94, 0.08);
 }
 
 .company-orbit::before,
@@ -225,11 +349,11 @@
 .company-monogram {
   position: relative;
   z-index: 2;
-  width: clamp(150px, 15vw, 230px);
-  height: clamp(150px, 15vw, 230px);
+  width: clamp(132px, 13vw, 205px);
+  height: clamp(132px, 13vw, 205px);
   display: grid;
   place-items: center;
-  border-radius: 34px;
+  border-radius: 30px;
   background: linear-gradient(145deg, #F2F0EB, #DCD4C5);
   border: 1px solid rgba(255, 255, 255, 0.58);
   box-shadow:
@@ -237,37 +361,18 @@
     inset 1px 1px 0 rgba(255, 255, 255, 0.65),
     inset -10px -10px 22px rgba(0, 0, 0, 0.08);
   font-family: var(--font-serif);
-  font-size: clamp(2.3rem, 3.5vw, 4.2rem);
+  font-size: clamp(2.1rem, 3.2vw, 3.9rem);
   font-weight: 600;
   letter-spacing: 0.14em;
   color: var(--matte-black);
 }
 
-.company-meta {
-  position: absolute;
-  left: clamp(24px, 4vw, 54px);
-  right: clamp(24px, 4vw, 54px);
-  bottom: clamp(20px, 3vw, 30px);
-  z-index: 4;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid rgba(242, 240, 235, 0.09);
-}
-
-.company-meta span {
-  padding-top: 12px;
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(242, 240, 235, 0.42);
-}
 
 .companies-progress {
   position: absolute;
   left: clamp(18px, 3vw, 42px);
   top: 26%;
-  bottom: 10%;
+  bottom: 12%;
   z-index: 30;
   width: 1px;
   background: rgba(242, 240, 235, 0.12);
@@ -283,21 +388,76 @@
   background: var(--gold);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) and (min-width: 769px) {
   .companies-pin {
-    height: auto;
-    min-height: auto;
-    display: block;
-    padding: 82px 6% 96px;
+    min-height: 720px;
+    height: 100svh;
+    padding: 0 4%;
   }
 
   .companies-header {
-    text-align: left;
-    margin-bottom: 40px;
+    top: clamp(38px, 5vh, 64px);
+    width: min(92vw, 720px);
   }
 
-  .companies-kicker {
-    justify-content: flex-start;
+  .companies-bg-word {
+    top: 5%;
+  }
+
+  .companies-stage {
+    top: 54%;
+    width: min(92vw, 920px);
+    height: clamp(440px, 58svh, 560px);
+  }
+
+  .company-card-content {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr);
+    gap: 28px;
+    padding: clamp(28px, 4vw, 46px);
+  }
+
+  .company-copy h3 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+  }
+
+  .company-description {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .company-visual {
+    min-height: 230px;
+  }
+
+  .company-orbit {
+    width: clamp(180px, 24vw, 260px);
+  }
+
+  .company-monogram {
+    width: clamp(128px, 18vw, 180px);
+    height: clamp(128px, 18vw, 180px);
+  }
+}
+
+@media (max-width: 768px) {
+  .companies-pin {
+    position: relative;
+    height: 100svh;
+    min-height: 680px;
+    overflow: hidden;
+    padding: 0 5%;
+    display: grid;
+    place-items: center;
+  }
+
+  .companies-header {
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92vw, 520px);
+    text-align: center;
+    z-index: 10;
   }
 
   .companies-header h2 {
@@ -305,57 +465,98 @@
   }
 
   .companies-bg-word {
-    top: 2%;
-    right: -14%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    top: 6%;
     font-size: clamp(4.6rem, 24vw, 7rem);
+    max-width: 100vw;
+    overflow: hidden;
+  }
+
+  .companies-kicker-text {
+    font-size: 1.08rem;
+    letter-spacing: 0.11em;
+  }
+
+  .companies-kicker-line {
+    width: 36px;
   }
 
   .companies-stage {
-    width: 100%;
-    height: auto;
-    min-height: auto;
-    display: grid;
-    gap: 28px;
+    position: absolute;
+    left: 50%;
+    top: 56%;
+    transform: translate(-50%, -50%);
+    width: min(92vw, 520px);
+    height: clamp(410px, 58svh, 500px);
+    min-height: 410px;
   }
 
   .company-card {
-    position: relative !important;
-    inset: auto !important;
-    height: auto;
-    min-height: auto;
-    transform: none !important;
-    filter: none !important;
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
   }
 
   .company-card-content {
-    min-height: auto;
     grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 30px 24px 92px;
-    border-radius: 28px;
+    align-content: center;
+    gap: 16px;
+    padding: 26px 22px 34px;
   }
 
   .company-visual {
     order: -1;
-    min-height: 220px;
-  }
-
-  .company-copy h3 {
-    font-size: clamp(2.8rem, 14vw, 4.4rem);
+    min-height: 145px;
+    transform: translateY(-6px);
   }
 
   .company-orbit {
-    width: 220px;
+    width: 145px;
   }
 
   .company-monogram {
-    width: 145px;
-    height: 145px;
+    width: 100px;
+    height: 100px;
+    border-radius: 22px;
+    font-size: 1.8rem;
   }
 
-  .company-meta {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 14px;
+  .company-copy {
+    transform: translateY(-6px);
+  }
+
+  .company-index {
+    font-size: 0.6rem;
+  }
+
+  .company-category {
+    margin-top: 8px;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+  }
+
+  .company-copy h3 {
+    margin: 10px 0 10px;
+    font-size: clamp(2.15rem, 12vw, 3.4rem);
+  }
+
+  .company-description {
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .company-actions {
+    margin-top: 18px;
+  }
+
+  .company-visit-btn {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
   }
 
   .companies-progress {
@@ -363,12 +564,56 @@
   }
 }
 
-@media (max-width: 420px) {
-  .company-card-content {
-    padding: 26px 20px 96px;
+@media (max-width: 390px) {
+  .companies-pin {
+    min-height: 650px;
   }
 
-  .company-meta {
-    grid-template-columns: 1fr;
+  .companies-header {
+    top: 44px;
+  }
+
+  .companies-bg-word {
+    top: 6%;
+  }
+
+  .companies-stage {
+    top: 57%;
+    height: 400px;
+    min-height: 400px;
+  }
+
+  .company-card-content {
+    padding: 22px 18px 30px;
+  }
+
+  .company-actions {
+    margin-top: 16px;
+  }
+
+  .company-visit-btn {
+    width: 100%;
+  }
+
+  .company-visual {
+    min-height: 125px;
+  }
+
+  .company-orbit {
+    width: 125px;
+  }
+
+  .company-monogram {
+    width: 88px;
+    height: 88px;
+    font-size: 1.55rem;
+  }
+
+  .company-copy h3 {
+    font-size: clamp(1.95rem, 11vw, 2.9rem);
+  }
+
+  .company-description {
+    font-size: 0.78rem;
   }
 }
