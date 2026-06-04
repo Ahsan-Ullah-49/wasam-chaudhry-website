@@ -49,11 +49,22 @@ const podcasts = [
 
 const Media = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const carouselRef = useRef(null);
+  const touchStartX = useRef(null);
 
-  const scrollTimeoutRef = useRef(null);
+  const getCardOffset = (index) => {
+    const total = podcasts.length;
+    let offset = index - activeIndex;
 
-  const activePodcast = podcasts[activeIndex];
+    if (offset > total / 2) {
+      offset -= total;
+    }
+
+    if (offset < -total / 2) {
+      offset += total;
+    }
+
+    return offset;
+  };
 
   const goToPrev = () => {
     setActiveIndex((current) =>
@@ -67,58 +78,33 @@ const Media = () => {
     );
   };
 
-  const handleCarouselScroll = () => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-
-    window.clearTimeout(scrollTimeoutRef.current);
-
-    scrollTimeoutRef.current = window.setTimeout(() => {
-      const cards = Array.from(
-        carousel.querySelectorAll(".media-podcast-card")
-      );
-
-      const carouselRect = carousel.getBoundingClientRect();
-      const carouselCenter = carouselRect.left + carouselRect.width / 2;
-
-      let closestIndex = activeIndex;
-      let closestDistance = Infinity;
-
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        const cardCenter = rect.left + rect.width / 2;
-        const distance = Math.abs(carouselCenter - cardCenter);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      if (closestIndex !== activeIndex) {
-        setActiveIndex(closestIndex);
-      }
-    }, 120);
+  const handleTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX;
   };
 
-  useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
+  const handleTouchEnd = (event) => {
+    if (touchStartX.current === null) return;
 
-    const activeCard = carousel.querySelector(".media-podcast-card.is-active");
-    activeCard?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  }, [activeIndex]);
+    const touchEndX = event.changedTouches[0].clientX;
+    const distance = touchStartX.current - touchEndX;
 
-  useEffect(() => {
-    return () => window.clearTimeout(scrollTimeoutRef.current);
-  }, []);
+    if (Math.abs(distance) > 45) {
+      if (distance > 0) {
+        goToNext();
+      } else {
+        goToPrev();
+      }
+    }
+
+    touchStartX.current = null;
+  };
 
   return (
     <section id="media" className="media-section">
+      <div className="media-bg-word" aria-hidden="true">
+        PODCASTS
+      </div>
+
       <div className="media-header reveal-on-scroll">
         <div className="media-kicker">
           <span className="media-kicker-line"></span>
@@ -127,31 +113,6 @@ const Media = () => {
         </div>
 
         <h2>Podcast & Interviews</h2>
-      </div>
-
-      <div className="media-player-stage reveal-on-scroll">
-        <div className="media-bg-word" aria-hidden="true">
-          PODCASTS
-        </div>
-
-        <div className="media-player-wrap">
-          <div className="media-player-info">
-            <p>{activePodcast.category}</p>
-            <h3>{activePodcast.title}</h3>
-            <span>{activePodcast.number} / 07</span>
-          </div>
-
-          <div className="media-main-player">
-            <iframe
-              key={activePodcast.id}
-              src={`https://www.youtube-nocookie.com/embed/${activePodcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
-              title={activePodcast.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
       </div>
 
       <div className="media-carousel-shell">
@@ -164,39 +125,80 @@ const Media = () => {
           ←
         </button>
 
-        <div 
-          className="media-carousel" 
-          ref={carouselRef} 
-          onScroll={handleCarouselScroll}
+        <div
+          className="media-coverflow"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           aria-label="Podcast carousel"
         >
-          {podcasts.map((podcast, index) => (
-            <button
-              type="button"
-              key={podcast.id}
-              className={`media-podcast-card ${index === activeIndex ? "is-active" : ""}`}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Play ${podcast.title}`}
-            >
-              <div className="media-podcast-thumb">
-                <img
-                  src={`https://img.youtube.com/vi/${podcast.id}/hqdefault.jpg`}
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
+          {podcasts.map((podcast, index) => {
+            const offset = getCardOffset(index);
+            const absOffset = Math.abs(offset);
+            const isActive = index === activeIndex;
 
-              <span className="media-podcast-play" aria-hidden="true">
-                <i></i>
-              </span>
+            return (
+              <article
+                key={podcast.id}
+                className={`media-podcast-card ${isActive ? "is-active" : ""}`}
+                style={{
+                  "--offset": offset,
+                  "--abs-offset": absOffset,
+                  "--z-index": 20 - absOffset,
+                }}
+              >
+                <div className="media-podcast-thumb">
+                  {isActive ? (
+                    <iframe
+                      key={podcast.id}
+                      src={`https://www.youtube-nocookie.com/embed/${podcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
+                      title={podcast.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      loading="lazy"
+                    ></iframe>
+                  ) : (
+                    <>
+                      <img
+                        src={`https://img.youtube.com/vi/${podcast.id}/hqdefault.jpg`}
+                        alt=""
+                        loading="lazy"
+                      />
 
-              <div className="media-podcast-body">
-                <span>{podcast.number}</span>
-                <p>{podcast.category}</p>
-                <h3>{podcast.title}</h3>
-              </div>
-            </button>
-          ))}
+                      <button
+                        className="media-podcast-select"
+                        type="button"
+                        onClick={() => setActiveIndex(index)}
+                        aria-label={`Play ${podcast.title}`}
+                      >
+                        <span className="media-podcast-play" aria-hidden="true">
+                          <i></i>
+                        </span>
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {!isActive && (
+                  <button
+                    className="media-podcast-body"
+                    type="button"
+                    onClick={() => setActiveIndex(index)}
+                    aria-label={`Select ${podcast.title}`}
+                  >
+                    <p>{podcast.category}</p>
+                    <h3>{podcast.title}</h3>
+                  </button>
+                )}
+
+                {isActive && (
+                  <div className="media-active-label">
+                    <p>{podcast.category}</p>
+                    <h3>{podcast.title}</h3>
+                  </div>
+                )}
+              </article>
+            );
+          })}
         </div>
 
         <button
@@ -209,11 +211,6 @@ const Media = () => {
         </button>
       </div>
 
-      <div className="media-view-more-wrap">
-        <a href="#contact" className="btn-gold media-view-more">
-          View More
-        </a>
-      </div>
     </section>
   );
 };
