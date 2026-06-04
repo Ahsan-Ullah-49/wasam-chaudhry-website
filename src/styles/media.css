@@ -590,8 +590,40 @@
   cursor: grabbing;
 }
 
+.media-mobile-gesture-layer {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .media-swipe-zone {
-    width: 18%;
+    width: 26%;
+  }
+
+  .media-mobile-gesture-layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 62px;
+    z-index: 35;
+    display: block;
+    background: transparent;
+    pointer-events: auto;
+    touch-action: pan-y;
+    cursor: grab;
+  }
+
+  .media-mobile-gesture-layer:active {
+    cursor: grabbing;
+  }
+}
+
+@media (max-width: 430px) {
+  .media-swipe-zone {
+    width: 30%;
+  }
+
+  .media-mobile-gesture-layer {
+    bottom: 56px;
   }
 }

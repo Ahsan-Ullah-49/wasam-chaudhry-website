@@ -109,13 +109,18 @@ const Media = () => {
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
 
+    const isMobile = window.innerWidth <= 768;
+    const horizontalStart = isMobile ? 8 : 14;
+    const verticalStart = isMobile ? 10 : 12;
+    const ratio = isMobile ? 1.1 : 1.35;
+
     if (!swipe.isHorizontal && !swipe.isVertical) {
-      if (absY > 12 && absY > absX * 1.2) {
+      if (absY > verticalStart && absY > absX * 1.25) {
         swipe.isVertical = true;
         return;
       }
 
-      if (absX > 14 && absX > absY * 1.35) {
+      if (absX > horizontalStart && absX > absY * ratio) {
         swipe.isHorizontal = true;
       }
     }
@@ -143,9 +148,14 @@ const Media = () => {
       startedOnIframe: false,
     };
 
-    if (swipe.startedOnIframe) return;
+    if (swipe.startedOnIframe && window.innerWidth > 768) return;
 
-    const isRealHorizontalSwipe = absX > 55 && absX > absY * 1.45;
+    const isMobile = window.innerWidth <= 768;
+    const minSwipeDistance = isMobile ? 28 : 55;
+    const directionRatio = isMobile ? 1.12 : 1.45;
+
+    const isRealHorizontalSwipe =
+      absX > minSwipeDistance && absX > absY * directionRatio;
 
     if (!isRealHorizontalSwipe) return;
 
@@ -227,6 +237,14 @@ const Media = () => {
                         allowFullScreen
                         loading="lazy"
                       ></iframe>
+                      <div
+                        className="media-mobile-gesture-layer"
+                        aria-hidden="true"
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerUp}
+                        onPointerCancel={handlePointerCancel}
+                      />
                       <button
                         type="button"
                         className="media-swipe-zone media-swipe-zone-left"
