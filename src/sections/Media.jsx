@@ -49,7 +49,11 @@ const podcasts = [
 
 const Media = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const touchStartX = useRef(null);
+  const touchStartRef = useRef({
+    x: 0,
+    y: 0,
+    time: 0,
+  });
 
   const getCardOffset = (index) => {
     const total = podcasts.length;
@@ -79,24 +83,34 @@ const Media = () => {
   };
 
   const handleTouchStart = (event) => {
-    touchStartX.current = event.touches[0].clientX;
+    const touch = event.touches[0];
+
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now(),
+    };
   };
 
   const handleTouchEnd = (event) => {
-    if (touchStartX.current === null) return;
+    const touch = event.changedTouches[0];
 
-    const touchEndX = event.changedTouches[0].clientX;
-    const distance = touchStartX.current - touchEndX;
+    const deltaX = touchStartRef.current.x - touch.clientX;
+    const deltaY = touchStartRef.current.y - touch.clientY;
+    const elapsed = Date.now() - touchStartRef.current.time;
 
-    if (Math.abs(distance) > 45) {
-      if (distance > 0) {
-        goToNext();
-      } else {
-        goToPrev();
-      }
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    const isHorizontalSwipe = absX > 45 && absX > absY * 1.35 && elapsed < 900;
+
+    if (!isHorizontalSwipe) return;
+
+    if (deltaX > 0) {
+      goToNext();
+    } else {
+      goToPrev();
     }
-
-    touchStartX.current = null;
   };
 
   return (
@@ -148,14 +162,23 @@ const Media = () => {
               >
                 <div className="media-podcast-thumb">
                   {isActive ? (
-                    <iframe
-                      key={podcast.id}
-                      src={`https://www.youtube-nocookie.com/embed/${podcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
-                      title={podcast.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      loading="lazy"
-                    ></iframe>
+                    <>
+                      <iframe
+                        key={podcast.id}
+                        src={`https://www.youtube-nocookie.com/embed/${podcast.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`}
+                        title={podcast.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        loading="lazy"
+                      ></iframe>
+                      <button
+                        type="button"
+                        className="media-mobile-swipe-layer"
+                        aria-label="Swipe to change podcast"
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                      />
+                    </>
                   ) : (
                     <>
                       <img

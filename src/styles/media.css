@@ -541,3 +541,21 @@
     height: 215px;
   }
 }
+
+.media-mobile-swipe-layer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .media-mobile-swipe-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 12;
+    display: block;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+}
