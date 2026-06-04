@@ -111,6 +111,11 @@
   touch-action: pan-y;
   perspective: 1200px;
   z-index: 2;
+  cursor: grab;
+}
+
+.media-coverflow:active {
+  cursor: grabbing;
 }
 
 .media-podcast-card {
@@ -193,11 +198,28 @@
     0 28px 76px rgba(184, 154, 94, 0.18);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  cursor: default;
   transform:
     translate(-50%, -50%)
     translateX(0)
     translateY(-10px)
     scale(1);
+}
+
+.media-podcast-card.is-active:hover {
+  transform:
+    translate(-50%, -50%)
+    translateX(0)
+    translateY(-12px)
+    scale(1.035);
+}
+
+.media-podcast-card.is-active:hover iframe {
+  pointer-events: auto;
+}
+
+.media-podcast-card.is-active .media-podcast-thumb {
+  cursor: auto;
 }
 
 .media-podcast-card:not(.is-active) {
@@ -238,6 +260,8 @@
   border: 0;
   display: block;
   z-index: 5;
+  pointer-events: auto;
+  cursor: auto;
 }
 
 .media-podcast-thumb img {
@@ -542,20 +566,32 @@
   }
 }
 
-.media-mobile-swipe-layer {
-  display: none;
+.media-swipe-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 12;
+  width: 13%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: grab;
+}
+
+.media-swipe-zone-left {
+  left: 0;
+}
+
+.media-swipe-zone-right {
+  right: 0;
+}
+
+.media-swipe-zone:active {
+  cursor: grabbing;
 }
 
 @media (max-width: 768px) {
-  .media-mobile-swipe-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 12;
-    display: block;
-    border: 0;
-    background: transparent;
-    padding: 0;
-    cursor: grab;
-    touch-action: pan-y;
+  .media-swipe-zone {
+    width: 18%;
   }
 }

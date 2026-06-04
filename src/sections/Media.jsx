@@ -49,10 +49,13 @@ const podcasts = [
 
 const Media = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const touchStartRef = useRef({
+  const pointerStartRef = useRef({
     x: 0,
     y: 0,
-    time: 0,
+    isDown: false,
+    isHorizontal: false,
+    isVertical: false,
+    startedOnIframe: false,
   });
 
   const getCardOffset = (index) => {
@@ -82,35 +85,86 @@ const Media = () => {
     );
   };
 
-  const handleTouchStart = (event) => {
-    const touch = event.touches[0];
+  const handlePointerDown = (event) => {
+    const startedOnIframe = event.target?.tagName?.toLowerCase() === "iframe";
 
-    touchStartRef.current = {
-      x: touch.clientX,
-      y: touch.clientY,
-      time: Date.now(),
+    pointerStartRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      isDown: true,
+      isHorizontal: false,
+      isVertical: false,
+      startedOnIframe,
     };
   };
 
-  const handleTouchEnd = (event) => {
-    const touch = event.changedTouches[0];
+  const handlePointerMove = (event) => {
+    const swipe = pointerStartRef.current;
+    if (!swipe.isDown) return;
 
-    const deltaX = touchStartRef.current.x - touch.clientX;
-    const deltaY = touchStartRef.current.y - touch.clientY;
-    const elapsed = Date.now() - touchStartRef.current.time;
+    if (swipe.startedOnIframe) return;
 
+    const deltaX = event.clientX - swipe.x;
+    const deltaY = event.clientY - swipe.y;
     const absX = Math.abs(deltaX);
     const absY = Math.abs(deltaY);
 
-    const isHorizontalSwipe = absX > 45 && absX > absY * 1.35 && elapsed < 900;
+    if (!swipe.isHorizontal && !swipe.isVertical) {
+      if (absY > 12 && absY > absX * 1.2) {
+        swipe.isVertical = true;
+        return;
+      }
 
-    if (!isHorizontalSwipe) return;
+      if (absX > 14 && absX > absY * 1.35) {
+        swipe.isHorizontal = true;
+      }
+    }
 
-    if (deltaX > 0) {
+    if (swipe.isHorizontal) {
+      event.preventDefault();
+    }
+  };
+
+  const handlePointerUp = (event) => {
+    const swipe = pointerStartRef.current;
+    if (!swipe.isDown) return;
+
+    const deltaX = event.clientX - swipe.x;
+    const deltaY = event.clientY - swipe.y;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    pointerStartRef.current = {
+      x: 0,
+      y: 0,
+      isDown: false,
+      isHorizontal: false,
+      isVertical: false,
+      startedOnIframe: false,
+    };
+
+    if (swipe.startedOnIframe) return;
+
+    const isRealHorizontalSwipe = absX > 55 && absX > absY * 1.45;
+
+    if (!isRealHorizontalSwipe) return;
+
+    if (deltaX < 0) {
       goToNext();
     } else {
       goToPrev();
     }
+  };
+
+  const handlePointerCancel = () => {
+    pointerStartRef.current = {
+      x: 0,
+      y: 0,
+      isDown: false,
+      isHorizontal: false,
+      isVertical: false,
+      startedOnIframe: false,
+    };
   };
 
   return (
@@ -141,8 +195,10 @@ const Media = () => {
 
         <div
           className="media-coverflow"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
           aria-label="Podcast carousel"
         >
           {podcasts.map((podcast, index) => {
@@ -173,10 +229,23 @@ const Media = () => {
                       ></iframe>
                       <button
                         type="button"
-                        className="media-mobile-swipe-layer"
-                        aria-label="Swipe to change podcast"
-                        onTouchStart={handleTouchStart}
-                        onTouchEnd={handleTouchEnd}
+                        className="media-swipe-zone media-swipe-zone-left"
+                        aria-label="Previous podcast"
+                        onClick={goToPrev}
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerUp}
+                        onPointerCancel={handlePointerCancel}
+                      />
+                      <button
+                        type="button"
+                        className="media-swipe-zone media-swipe-zone-right"
+                        aria-label="Next podcast"
+                        onClick={goToNext}
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerUp}
+                        onPointerCancel={handlePointerCancel}
                       />
                     </>
                   ) : (
