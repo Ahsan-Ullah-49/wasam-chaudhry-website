@@ -55,7 +55,6 @@ const Media = () => {
     isDown: false,
     isHorizontal: false,
     isVertical: false,
-    startedOnIframe: false,
   });
 
   const getCardOffset = (index) => {
@@ -86,23 +85,20 @@ const Media = () => {
   };
 
   const handlePointerDown = (event) => {
-    const startedOnIframe = event.target?.tagName?.toLowerCase() === "iframe";
-
     pointerStartRef.current = {
       x: event.clientX,
       y: event.clientY,
       isDown: true,
       isHorizontal: false,
       isVertical: false,
-      startedOnIframe,
     };
+
+    event.currentTarget?.setPointerCapture?.(event.pointerId);
   };
 
   const handlePointerMove = (event) => {
     const swipe = pointerStartRef.current;
     if (!swipe.isDown) return;
-
-    if (swipe.startedOnIframe) return;
 
     const deltaX = event.clientX - swipe.x;
     const deltaY = event.clientY - swipe.y;
@@ -110,9 +106,9 @@ const Media = () => {
     const absY = Math.abs(deltaY);
 
     const isMobile = window.innerWidth <= 768;
-    const horizontalStart = isMobile ? 8 : 14;
+    const horizontalStart = isMobile ? 8 : 12;
     const verticalStart = isMobile ? 10 : 12;
-    const ratio = isMobile ? 1.1 : 1.35;
+    const ratio = isMobile ? 1.08 : 1.25;
 
     if (!swipe.isHorizontal && !swipe.isVertical) {
       if (absY > verticalStart && absY > absX * 1.25) {
@@ -145,14 +141,11 @@ const Media = () => {
       isDown: false,
       isHorizontal: false,
       isVertical: false,
-      startedOnIframe: false,
     };
 
-    if (swipe.startedOnIframe && window.innerWidth > 768) return;
-
     const isMobile = window.innerWidth <= 768;
-    const minSwipeDistance = isMobile ? 28 : 55;
-    const directionRatio = isMobile ? 1.12 : 1.45;
+    const minSwipeDistance = isMobile ? 26 : 45;
+    const directionRatio = isMobile ? 1.08 : 1.25;
 
     const isRealHorizontalSwipe =
       absX > minSwipeDistance && absX > absY * directionRatio;
@@ -173,7 +166,6 @@ const Media = () => {
       isDown: false,
       isHorizontal: false,
       isVertical: false,
-      startedOnIframe: false,
     };
   };
 
@@ -237,34 +229,6 @@ const Media = () => {
                         allowFullScreen
                         loading="lazy"
                       ></iframe>
-                      <div
-                        className="media-mobile-gesture-layer"
-                        aria-hidden="true"
-                        onPointerDown={handlePointerDown}
-                        onPointerMove={handlePointerMove}
-                        onPointerUp={handlePointerUp}
-                        onPointerCancel={handlePointerCancel}
-                      />
-                      <button
-                        type="button"
-                        className="media-swipe-zone media-swipe-zone-left"
-                        aria-label="Previous podcast"
-                        onClick={goToPrev}
-                        onPointerDown={handlePointerDown}
-                        onPointerMove={handlePointerMove}
-                        onPointerUp={handlePointerUp}
-                        onPointerCancel={handlePointerCancel}
-                      />
-                      <button
-                        type="button"
-                        className="media-swipe-zone media-swipe-zone-right"
-                        aria-label="Next podcast"
-                        onClick={goToNext}
-                        onPointerDown={handlePointerDown}
-                        onPointerMove={handlePointerMove}
-                        onPointerUp={handlePointerUp}
-                        onPointerCancel={handlePointerCancel}
-                      />
                     </>
                   ) : (
                     <>
@@ -284,6 +248,26 @@ const Media = () => {
                           <i></i>
                         </span>
                       </button>
+                    </>
+                  )}
+                  {isActive && (
+                    <>
+                      <div
+                        className="media-swipe-zone media-swipe-zone-left"
+                        aria-hidden="true"
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerUp}
+                        onPointerCancel={handlePointerCancel}
+                      />
+                      <div
+                        className="media-swipe-zone media-swipe-zone-right"
+                        aria-hidden="true"
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerUp}
+                        onPointerCancel={handlePointerCancel}
+                      />
                     </>
                   )}
                 </div>
