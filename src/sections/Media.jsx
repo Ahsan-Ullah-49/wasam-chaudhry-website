@@ -24,7 +24,7 @@ const podcasts = [
   {
     id: "sdd4BST87ks",
     number: "04",
-    title: "Scaling Vision Into Impact",
+    title: "Pear\u00A0Pressure",
     category: "Executive Dialogue",
   },
   {
@@ -171,21 +171,21 @@ const Media = () => {
 
   return (
     <section id="media" className="media-section">
-      <div className="media-bg-word" aria-hidden="true">
+      <div className="media-bg-word" aria-hidden="true" data-reveal="soft">
         PODCASTS
       </div>
 
-      <div className="media-header reveal-on-scroll">
-        <div className="media-kicker">
+      <div className="media-header media-visible-heading-offset reveal-on-scroll">
+        <div className="media-kicker" data-reveal="fade-down">
           <span className="media-kicker-line"></span>
           <span className="media-kicker-index">03</span>
           <span className="media-kicker-text">MEDIA</span>
         </div>
 
-        <h2>Podcast & Interviews</h2>
+        <h2 data-reveal="zoom-in">Podcast &amp; Interviews</h2>
       </div>
 
-      <div className="media-carousel-shell">
+      <div className="media-carousel-shell" data-reveal="soft">
         <button
           className="media-arrow media-arrow-prev"
           type="button"
@@ -280,14 +280,14 @@ const Media = () => {
                     aria-label={`Select ${podcast.title}`}
                   >
                     <p>{podcast.category}</p>
-                    <h3>{podcast.title}</h3>
+                    <h3 className={`media-podcast-title ${podcast.title.includes("Pear") && podcast.title.includes("Pressure") ? "media-podcast-title--pear-pressure" : ""}`}>{podcast.title}</h3>
                   </button>
                 )}
 
                 {isActive && (
                   <div className="media-active-label">
                     <p>{podcast.category}</p>
-                    <h3>{podcast.title}</h3>
+                    <h3 className={`media-podcast-title ${podcast.title.includes("Pear") && podcast.title.includes("Pressure") ? "media-podcast-title--pear-pressure" : ""}`}>{podcast.title}</h3>
                   </div>
                 )}
               </article>

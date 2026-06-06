@@ -14,7 +14,7 @@
   position: absolute;
   left: 50%;
   top: 42%;
-  transform: translate(-50%, -68%);
+  transform: translate(-50%, -68%) translateY(68px);
   z-index: 0;
   font-family: var(--font-serif);
   font-size: clamp(6rem, 15vw, 16rem);
@@ -36,6 +36,7 @@
   max-width: 780px;
   margin: clamp(100px, 15vw, 180px) auto clamp(24px, 3vw, 40px);
   text-align: center;
+  transform: translateY(62px);
 }
 
 .media-kicker {
@@ -440,8 +441,12 @@
 @media (max-width: 1024px) and (min-width: 769px) {
   .media-bg-word {
     top: 43%;
-    transform: translate(-50%, -68%);
+    transform: translate(-50%, -68%) translateY(52px);
     font-size: clamp(5.4rem, 16vw, 11rem);
+  }
+
+  .media-header {
+    transform: translateY(50px);
   }
 
   .media-coverflow {
@@ -476,13 +481,14 @@
 
   .media-bg-word {
     top: 44%;
-    transform: translate(-50%, -68%);
+    transform: translate(-50%, -68%) translateY(40px);
     font-size: clamp(4.4rem, 22vw, 7rem);
   }
 
   .media-header {
     position: relative;
     z-index: 3;
+    transform: translateY(40px);
   }
 
   .media-carousel-shell {
@@ -540,8 +546,12 @@
 @media (max-width: 430px) {
   .media-bg-word {
     top: 45%;
-    transform: translate(-50%, -68%);
+    transform: translate(-50%, -68%) translateY(30px);
     font-size: clamp(4rem, 22vw, 6.4rem);
+  }
+
+  .media-header {
+    transform: translateY(30px);
   }
 
   .media-coverflow {
@@ -609,5 +619,57 @@
     bottom: auto !important;
     height: 34% !important;
     width: 22%;
+  }
+}
+
+/* ── Visible heading offset override ─────────────────────────────────── */
+.media-visible-heading-offset {
+  position: relative !important;
+  top: 46px !important;
+  transform: none !important;
+  z-index: 8;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .media-visible-heading-offset {
+    top: 36px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .media-visible-heading-offset {
+    top: 28px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .media-visible-heading-offset {
+    top: 22px !important;
+  }
+}
+
+/* ── Pear Pressure Title Override ──────────────────────────────────────── */
+h3.media-podcast-title--pear-pressure {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  max-width: 100% !important;
+  font-size: clamp(0.98rem, 1.25vw, 1.28rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0.005em !important;
+  width: 100% !important;
+  min-width: max-content;
+}
+
+@media (max-width: 768px) {
+  h3.media-podcast-title--pear-pressure {
+    font-size: clamp(0.9rem, 3.2vw, 1.08rem) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  h3.media-podcast-title--pear-pressure {
+    font-size: 0.88rem !important;
   }
 }

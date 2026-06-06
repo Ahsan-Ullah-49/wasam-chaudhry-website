@@ -1183,53 +1183,93 @@ a { text-decoration: none; }
   margin-top: 56px;
 }
 
-/* ── Credential Strip ── */
-.about-credentials {
+/* ── Credential Strip Marquee ── */
+.about-marquee {
   grid-area: credentials;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-top: clamp(28px, 4vw, 52px);
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
   border-top: 1px solid rgba(184, 154, 94, 0.22);
   border-bottom: 1px solid rgba(184, 154, 94, 0.14);
 }
 
-.credential {
-  padding: 24px 20px;
-  min-height: 108px;
-  border-right: 1px solid rgba(242, 240, 235, 0.07);
+.about-marquee-track {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  transition: background-color 0.32s ease, transform 0.32s ease;
+  width: max-content;
+  gap: clamp(16px, 2vw, 28px);
+  animation: aboutCardsMarquee 45s linear infinite;
+  will-change: transform;
 }
 
-.credential:last-child {
-  border-right: none;
+.about-marquee:hover .about-marquee-track {
+  animation-play-state: paused;
 }
 
-.credential:hover {
-  background: rgba(184, 154, 94, 0.05);
-  transform: translateY(-3px);
+.about-marquee-group {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(16px, 2vw, 28px);
+  flex: 0 0 auto;
+  padding-right: clamp(16px, 2vw, 28px);
 }
 
-.credential span {
-  display: block;
-  margin-bottom: 14px;
-  font-family: var(--font-sans);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  color: rgba(184, 154, 94, 0.8);
+@keyframes aboutCardsMarquee {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
-.credential strong {
-  display: block;
-  font-family: var(--font-sans);
-  font-size: 0.76rem;
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: 0.1em;
+.about-marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 0 0 auto;
+  padding-right: 40px;
+}
+
+.credential-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(242, 240, 235, 0.82);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242, 240, 235, 0.25);
+  transition: color 0.4s ease, -webkit-text-stroke 0.4s ease, transform 0.4s ease;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.credential-text:hover {
+  color: var(--color-champagne-gold);
+  -webkit-text-stroke: 1px var(--color-champagne-gold);
+  transform: scale(1.02);
+}
+
+.credential-separator {
+  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+  color: var(--color-champagne-gold);
+  margin: 0 clamp(30px, 4vw, 60px);
+  opacity: 0.6;
 }
 
 /* ── RESPONSIVE ── */
@@ -1264,16 +1304,8 @@ a { text-decoration: none; }
     max-width: 100%;
   }
 
-  .about-credentials {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .credential:nth-child(3) {
-    border-right: none;
-  }
-
-  .credential:nth-child(n+4) {
-    border-top: 1px solid rgba(242, 240, 235, 0.07);
+  .about-marquee-track {
+    animation-duration: 40s;
   }
 }
 
@@ -1318,31 +1350,17 @@ a { text-decoration: none; }
     line-height: 1.76;
   }
 
-  .about-credentials {
-    grid-template-columns: 1fr 1fr;
+  .about-marquee {
+    margin-top: 30px;
   }
 
-  .credential {
-    min-height: auto;
-    border-right: none;
-    border-bottom: 1px solid rgba(242, 240, 235, 0.07);
+  .about-marquee-track {
+    animation-duration: 35s;
   }
 
-  .credential:nth-child(3) {
-    border-right: none;
-    border-top: none;
-  }
-
-  .credential:nth-child(n+4) {
-    border-top: none;
-  }
-
-  .credential:last-child {
-    border-bottom: none;
-  }
-
-  .credential:nth-child(odd) {
-    border-right: 1px solid rgba(242, 240, 235, 0.07);
+  .about-marquee-group {
+    gap: 14px;
+    padding-right: 14px;
   }
 }
 
@@ -1365,18 +1383,21 @@ a { text-decoration: none; }
     font-size: clamp(2.3rem, 13vw, 3.4rem);
   }
 
-  .about-credentials {
-    grid-template-columns: 1fr;
+  .about-marquee-track {
+    animation-duration: 30s;
   }
+}
 
-  .credential {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(242, 240, 235, 0.07);
-    min-height: auto;
+@media (max-width: 390px) {
+  .about-marquee-track {
+    animation-duration: 28s;
   }
+}
 
-  .credential:last-child {
-    border-bottom: none;
+@media (prefers-reduced-motion: reduce) {
+  .about-marquee-track {
+    animation: none;
+    transform: none;
   }
 }
 

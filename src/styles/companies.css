@@ -1,21 +1,9 @@
 .companies-section {
   position: relative;
-  min-height: 100svh;
   background: #0A0A0A;
   color: var(--off-white);
-  overflow: hidden;
-}
-
-.companies-pin {
-  position: relative;
-  width: 100%;
-  height: 100svh;
-  min-height: 760px;
-  overflow: hidden;
-  padding: 0 5%;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
+  overflow: clip;
+  padding: clamp(72px, 7vw, 110px) 5% clamp(100px, 12vw, 180px);
 }
 
 .companies-bg-word {
@@ -23,7 +11,7 @@
   left: 50%;
   right: auto;
   top: 6%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(24px);
   z-index: 0;
   font-family: var(--font-serif);
   font-size: clamp(6rem, 15vw, 16rem);
@@ -38,13 +26,33 @@
 }
 
 .companies-header {
-  position: absolute;
-  top: clamp(44px, 6vh, 78px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  width: min(90vw, 760px);
+  position: relative;
+  z-index: 5;
+  max-width: 820px;
+  margin: 0 auto clamp(52px, 7vw, 90px);
   text-align: center;
+}
+
+.companies-stack {
+  --card-height: clamp(430px, 54vh, 590px);
+  position: relative;
+  z-index: 4;
+  width: min(92vw, 1240px);
+  margin: 0 auto;
+  padding-bottom: clamp(80px, 16vh, 160px);
+}
+
+.company-stack-item {
+  position: sticky;
+  top: calc((100vh - var(--card-height)) / 2);
+  height: var(--card-height);
+  margin-bottom: clamp(70px, 16vh, 150px);
+  z-index: calc(10 + var(--i));
+  transform: none !important;
+}
+
+.company-stack-item:last-child {
+  margin-bottom: 0;
 }
 
 .companies-kicker {
@@ -52,6 +60,7 @@
   align-items: center;
   gap: 14px;
   margin-bottom: 24px;
+  transform: translateY(22px);
 }
 
 .companies-kicker-line {
@@ -79,6 +88,7 @@
 
 .companies-header h2 {
   margin: 0;
+  transform: translateY(26px);
   font-family: var(--font-serif);
   font-size: clamp(2.55rem, 5vw, 5rem);
   font-weight: 400;
@@ -97,26 +107,27 @@
   color: rgba(242, 240, 235, 0.66);
 }
 
-.companies-stage {
-  position: absolute;
-  left: 50%;
-  top: 51%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  width: min(92vw, 1240px);
-  height: clamp(430px, 54svh, 590px);
-  min-height: 430px;
-}
-
 .company-card {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  inset: auto;
   width: 100%;
   height: 100%;
   border-radius: clamp(26px, 4vw, 42px);
   overflow: hidden;
-  will-change: transform, filter;
+  transform: none !important;
+  filter: none !important;
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.company-card-visual {
+  width: 100%;
+  height: 100%;
   transform-origin: center center;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  transition: none !important;
 }
 
 .company-card-content {
@@ -368,46 +379,30 @@
 }
 
 
-.companies-progress {
-  position: absolute;
-  left: clamp(18px, 3vw, 42px);
-  top: 26%;
-  bottom: 12%;
-  z-index: 30;
-  width: 1px;
-  background: rgba(242, 240, 235, 0.12);
-  overflow: hidden;
-}
 
-.companies-progress span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform: scaleY(0);
-  transform-origin: top;
-  background: var(--gold);
-}
 
 @media (max-width: 1024px) and (min-width: 769px) {
-  .companies-pin {
-    min-height: 720px;
-    height: 100svh;
-    padding: 0 4%;
+  .companies-header h2 {
+    transform: translateY(20px);
   }
 
-  .companies-header {
-    top: clamp(38px, 5vh, 64px);
-    width: min(92vw, 720px);
+  .companies-kicker {
+    transform: translateY(18px);
   }
 
   .companies-bg-word {
     top: 5%;
+    transform: translateX(-50%) translateY(18px);
   }
 
-  .companies-stage {
-    top: 54%;
+  .companies-stack {
+    --card-height: clamp(440px, 58vh, 560px);
     width: min(92vw, 920px);
-    height: clamp(440px, 58svh, 560px);
+  }
+
+  .company-stack-item {
+    top: calc((100vh - var(--card-height)) / 2);
+    margin-bottom: clamp(64px, 14vh, 120px);
   }
 
   .company-card-content {
@@ -440,38 +435,31 @@
 }
 
 @media (max-width: 768px) {
-  .companies-pin {
-    position: relative;
-    height: 100svh;
-    min-height: 680px;
-    overflow: hidden;
-    padding: 0 5%;
-    display: grid;
-    place-items: center;
+  .companies-section {
+    padding: 64px 5% 110px;
   }
 
   .companies-header {
-    position: absolute;
-    top: 34px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(92vw, 520px);
-    text-align: center;
-    z-index: 10;
+    margin-bottom: 42px;
   }
 
   .companies-header h2 {
+    transform: translateY(16px);
     font-size: clamp(2.65rem, 13vw, 4.5rem);
   }
 
   .companies-bg-word {
     left: 50%;
     right: auto;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(14px);
     top: 6%;
     font-size: clamp(4.6rem, 24vw, 7rem);
     max-width: 100vw;
     overflow: hidden;
+  }
+
+  .companies-kicker {
+    transform: translateY(14px);
   }
 
   .companies-kicker-text {
@@ -483,21 +471,20 @@
     width: 36px;
   }
 
-  .companies-stage {
-    position: absolute;
-    left: 50%;
-    top: 56%;
-    transform: translate(-50%, -50%);
+  .companies-stack {
+    --card-height: clamp(410px, 62vh, 510px);
     width: min(92vw, 520px);
-    height: clamp(410px, 58svh, 500px);
-    min-height: 410px;
+    padding-bottom: 80px;
+  }
+
+  .company-stack-item {
+    top: calc((100vh - var(--card-height)) / 2);
+    height: var(--card-height);
+    margin-bottom: 72px;
   }
 
   .company-card {
-    position: absolute;
-    inset: 0;
     height: 100%;
-    width: 100%;
   }
 
   .company-card-content {
@@ -565,22 +552,25 @@
 }
 
 @media (max-width: 390px) {
-  .companies-pin {
-    min-height: 650px;
+  .companies-header h2 {
+    transform: translateY(12px);
   }
 
-  .companies-header {
-    top: 44px;
+  .companies-kicker {
+    transform: translateY(10px);
   }
 
   .companies-bg-word {
     top: 6%;
+    transform: translateX(-50%) translateY(10px);
   }
 
-  .companies-stage {
-    top: 57%;
-    height: 400px;
-    min-height: 400px;
+  .companies-stack {
+    --card-height: 405px;
+  }
+
+  .company-stack-item {
+    margin-bottom: 64px;
   }
 
   .company-card-content {
@@ -615,5 +605,74 @@
 
   .company-description {
     font-size: 0.78rem;
+  }
+}
+
+/* ── Pear Pressure Title Override ──────────────────────────────────────── */
+.company-card-title--pear-pressure {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  max-width: 100% !important;
+  width: max-content !important;
+  line-height: 1.05 !important;
+}
+
+@media (max-width: 1024px) {
+  .company-card-title--pear-pressure {
+    font-size: clamp(2.1rem, 6vw, 4.4rem) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-card-title--pear-pressure {
+    font-size: clamp(1.75rem, 8.5vw, 3.1rem) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .company-card-title--pear-pressure {
+    font-size: clamp(1.45rem, 8vw, 2.35rem) !important;
+    width: 100% !important;
+    white-space: nowrap !important;
+    text-align: inherit;
+  }
+}
+
+/* ── VENTURES Optical Center Override ──────────────────────────────────── */
+.ventures-optical-center {
+  --ventures-y-offset: 24px;
+  --ventures-x-nudge: -2.2vw;
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: -50vw !important;
+  margin-right: 0 !important;
+  text-align: center !important;
+  transform: translateY(var(--ventures-y-offset)) translateX(var(--ventures-x-nudge)) !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .ventures-optical-center {
+    --ventures-y-offset: 18px;
+    --ventures-x-nudge: -2vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .ventures-optical-center {
+    --ventures-y-offset: 14px;
+    --ventures-x-nudge: -1.5vw;
+  }
+}
+
+@media (max-width: 390px) {
+  .ventures-optical-center {
+    --ventures-y-offset: 10px;
+    --ventures-x-nudge: -1vw;
   }
 }

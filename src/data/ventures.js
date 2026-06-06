@@ -33,7 +33,7 @@ export const ventures = [
   {
     id: "pear-pressure",
     index: "04 / 04",
-    name: "Pear Pressure",
+    name: "Pear\u00A0Pressure",
     category: "Future Ventures",
     description:
       "A forward-looking space for future business concepts, creative ideas, strategic opportunities, and emerging collaborations.",
