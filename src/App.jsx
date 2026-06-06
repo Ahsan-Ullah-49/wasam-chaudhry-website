@@ -7,6 +7,7 @@ import Hero from "./sections/Hero";
 import About from "./sections/About";
 import Companies from "./sections/Companies";
 import Media from "./sections/Media";
+import GlobalNetwork from "./sections/GlobalNetwork.jsx";
 import ClickSpark from "./components/ClickSpark";
 
 // Import utilities for global vanilla behaviors we didn't migrate to React
@@ -80,6 +81,7 @@ function App() {
           <About />
           <Companies />
           <Media />
+          <GlobalNetwork />
         </main>
       </ClickSpark>
     </div>
