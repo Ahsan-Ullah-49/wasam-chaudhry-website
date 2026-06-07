@@ -8,6 +8,7 @@ import About from "./sections/About";
 import Companies from "./sections/Companies";
 import Media from "./sections/Media";
 import GlobalNetwork from "./sections/GlobalNetwork.jsx";
+import AutomotiveLifestyle from "./sections/AutomotiveLifestyle";
 import ClickSpark from "./components/ClickSpark";
 
 // Import utilities for global vanilla behaviors we didn't migrate to React
@@ -82,6 +83,7 @@ function App() {
           <Companies />
           <Media />
           <GlobalNetwork />
+          <AutomotiveLifestyle />
         </main>
       </ClickSpark>
     </div>

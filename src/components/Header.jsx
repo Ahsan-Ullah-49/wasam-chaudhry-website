@@ -57,7 +57,7 @@ const Header = () => {
         <a href="#companies" onClick={closeMenu}>Companies</a>
         <a href="#media" onClick={closeMenu}>Media</a>
         <a href="#global-network" onClick={closeMenu}>Global Network</a>
-        <a href="#lifestyle" onClick={closeMenu}>Lifestyle</a>
+        <a href="#automotive-lifestyle" onClick={closeMenu}>Lifestyle</a>
         <a href="#contact" className="btn-gold-outline" onClick={closeMenu}>Inquire</a>
       </nav>
       <button 
