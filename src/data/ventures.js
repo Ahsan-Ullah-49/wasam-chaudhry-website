@@ -1,3 +1,8 @@
+import autolinxLogo from "../assets/autolinx.png";
+import focusTvLogo from "../assets/focus tv.png";
+import theAnswerLogo from "../assets/the answer.png";
+import pearPressureLogo from "../assets/pear pressure.png";
+
 // Temporary website placeholders. Replace with real client-approved URLs later.
 export const ventures = [
   {
@@ -7,7 +12,8 @@ export const ventures = [
     category: "Automotive Commerce",
     description:
       "A trusted automotive business foundation connected to premium vehicles, compliance awareness, and long-term client relationships.",
-    monogram: "ALX",
+    logo: autolinxLogo,
+    logoClass: "autolinx",
     websiteUrl: "#",
   },
   {
@@ -17,7 +23,8 @@ export const ventures = [
     category: "Media & Broadcast",
     description:
       "A media platform built around visibility, conversations, storytelling, and digital audience connection.",
-    monogram: "FTV",
+    logo: focusTvLogo,
+    logoClass: "focus",
     websiteUrl: "#",
   },
   {
@@ -27,7 +34,8 @@ export const ventures = [
     category: "Executive Production",
     description:
       "A content and interview platform shaped around meaningful conversations, media presence, and purposeful storytelling.",
-    monogram: "ANS",
+    logo: theAnswerLogo,
+    logoClass: "answer",
     websiteUrl: "#",
   },
   {
@@ -37,7 +45,8 @@ export const ventures = [
     category: "Future Ventures",
     description:
       "A forward-looking space for future business concepts, creative ideas, strategic opportunities, and emerging collaborations.",
-    monogram: "PRP",
+    logo: pearPressureLogo,
+    logoClass: "pear",
     websiteUrl: "#",
   },
 ];

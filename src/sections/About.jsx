@@ -1,4 +1,5 @@
 import React from 'react';
+import profileImage from '../assets/profile.svg';
 
 const About = () => {
   return (
@@ -14,8 +15,8 @@ const About = () => {
         <div className="about-visual reveal-on-scroll" data-reveal="fade-right">
           <div className="about-image-shell">
             <img
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1400&q=80"
-              alt="Executive portrait placeholder"
+              src={profileImage}
+              alt="Wasam Chaudhry portrait"
               loading="lazy"
               decoding="async"
               onError={(e) => {

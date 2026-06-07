@@ -177,7 +177,13 @@ const Companies = () => {
 
                   <div className="company-visual" aria-hidden="true">
                     <div className="company-orbit"></div>
-                    <div className="company-monogram">{venture.monogram}</div>
+                    <div className="company-monogram">
+                      <img
+                        src={venture.logo}
+                        alt={`${venture.name} logo`}
+                        className={`company-card-logo company-card-logo--${venture.logoClass}`}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
