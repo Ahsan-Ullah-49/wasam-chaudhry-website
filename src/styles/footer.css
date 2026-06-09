@@ -1,12 +1,22 @@
 .site-footer {
   position: relative;
-  overflow-x: clip;
+  overflow: hidden;
   background:
     radial-gradient(circle at 50% 0%, rgba(184, 154, 94, 0.12), transparent 34%),
     #0A0A0A;
   color: #F2F0EB;
-  padding: clamp(76px, 8vw, 120px) 5% clamp(28px, 4vw, 44px);
   isolation: isolate;
+  padding: clamp(76px, 8vw, 120px) 5% clamp(28px, 4vw, 44px);
+}
+
+.site-footer *,
+.site-footer::before,
+.site-footer::after {
+  box-sizing: border-box;
+}
+
+.site-footer {
+  overflow-x: clip;
 }
 
 @supports not (overflow: clip) {
@@ -91,7 +101,7 @@
 }
 
 .site-footer-nav a,
-.site-footer-contact a {
+.site-footer-contact > a {
   width: fit-content;
   font-family: Inter, sans-serif;
   font-size: 0.78rem;
@@ -106,9 +116,42 @@
 }
 
 .site-footer-nav a:hover,
-.site-footer-contact a:hover {
+.site-footer-contact > a:hover {
   color: #B89A5E;
   transform: translateX(4px);
+}
+
+.site-footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.site-footer-socials a {
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 240, 235, 0.14);
+  background: rgba(242, 240, 235, 0.045);
+  color: rgba(242, 240, 235, 0.72);
+  text-decoration: none;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-footer-socials a:hover {
+  transform: translateY(-4px);
+  border-color: rgba(184, 154, 94, 0.72);
+  background: rgba(184, 154, 94, 0.14);
+  color: #B89A5E;
+  box-shadow: 0 14px 34px rgba(184, 154, 94, 0.12);
 }
 
 .site-footer-column-title {
@@ -183,7 +226,7 @@
   }
 
   .site-footer-nav a,
-  .site-footer-contact a {
+  .site-footer-contact > a {
     width: fit-content;
     max-width: 100%;
     font-size: 0.72rem;
@@ -206,8 +249,17 @@
   }
 
   .site-footer-nav a,
-  .site-footer-contact a {
+  .site-footer-contact > a {
     font-size: 0.74rem;
+  }
+
+  .site-footer-socials {
+    gap: 10px;
+  }
+
+  .site-footer-socials a {
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -228,11 +280,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .site-footer-nav a,
-  .site-footer-contact a {
+  .site-footer-contact > a,
+  .site-footer-socials a {
     transition: none;
   }
   .site-footer-nav a:hover,
-  .site-footer-contact a:hover {
+  .site-footer-contact > a:hover,
+  .site-footer-socials a:hover {
     transform: none;
   }
 }

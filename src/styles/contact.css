@@ -1,13 +1,30 @@
+/* ═══════════════════════════════════════════════════════════
+   CONTACT / INQUIRE SECTION
+   PRD Colors:
+     Matte Black:     #0A0A0A
+     Off White:       #F2F0EB
+     Champagne Gold:  #B89A5E
+     Dark Charcoal:   #1A1A1A
+═══════════════════════════════════════════════════════════ */
+
+/* ── Section base ── */
 .contact-section {
   position: relative;
-  overflow-x: clip;
-  background:
-    radial-gradient(circle at 82% 18%, rgba(184, 154, 94, 0.13), transparent 34%),
-    radial-gradient(circle at 18% 82%, rgba(184, 154, 94, 0.08), transparent 30%),
-    #F2F0EB;
+  overflow: hidden;
+  background: #F2F0EB;
   color: #0A0A0A;
-  padding: clamp(110px, 10vw, 160px) 5%;
   isolation: isolate;
+  padding: clamp(110px, 10vw, 160px) 5%;
+}
+
+.contact-section *,
+.contact-section::before,
+.contact-section::after {
+  box-sizing: border-box;
+}
+
+.contact-section {
+  overflow-x: clip;
 }
 
 @supports not (overflow: clip) {
@@ -16,12 +33,48 @@
   }
 }
 
+/* ── Task 1: Blurred golf background image ── */
+.contact-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=2400&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  filter: blur(8px);
+  opacity: 0.28;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+/* Soft overlay to preserve light off-white theme */
+.contact-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(135deg, rgba(242, 240, 235, 0.82), rgba(242, 240, 235, 0.66)),
+    radial-gradient(circle at 82% 18%, rgba(184, 154, 94, 0.13), transparent 36%);
+  pointer-events: none;
+}
+
+/* All content must sit above ::before and ::after */
+.contact-inner,
+.contact-bg-word {
+  position: relative;
+  z-index: 3;
+}
+
+/* ── Task 5: Background ghost word — moved upward ── */
 .contact-bg-word {
   position: absolute;
   left: 50%;
-  top: clamp(76px, 8vw, 126px);
+  top: clamp(18px, 3.2vw, 52px);
   transform: translateX(-50%);
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(5rem, 15vw, 15rem);
@@ -34,9 +87,8 @@
   overflow: hidden;
 }
 
+/* ── Inner grid layout ── */
 .contact-inner {
-  position: relative;
-  z-index: 3;
   max-width: 1360px;
   margin: 0 auto;
   display: grid;
@@ -45,26 +97,38 @@
   align-items: start;
 }
 
+/* ── Task 4: Kicker — matching About "ABOUT ME" style ── */
 .contact-kicker {
   display: inline-flex;
   align-items: center;
   gap: 14px;
   margin-bottom: clamp(20px, 2vw, 30px);
+}
+
+.contact-kicker-line {
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, #B89A5E, rgba(184, 154, 94, 0.08));
+}
+
+.contact-kicker-index {
   font-family: Inter, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: rgba(184, 154, 94, 0.72);
+}
+
+.contact-kicker-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+  font-style: italic;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #B89A5E;
 }
 
-.contact-kicker::after {
-  content: "";
-  width: 54px;
-  height: 1px;
-  background: rgba(184, 154, 94, 0.65);
-}
-
+/* ── Heading ── */
 .contact-content h2 {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
@@ -75,76 +139,95 @@
   color: #0A0A0A;
 }
 
-.contact-subtitle {
-  max-width: 650px;
-  margin: clamp(24px, 3vw, 36px) 0 0;
+.contact-content p {
+  max-width: 720px;
+  margin: clamp(16px, 2vw, 24px) 0 0;
   font-family: Inter, sans-serif;
-  font-size: clamp(1rem, 1.15vw, 1.12rem);
-  line-height: 1.9;
-  color: rgba(10, 10, 10, 0.68);
+  font-size: clamp(0.78rem, 1vw, 0.95rem);
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(184, 154, 94, 0.88);
 }
 
+/* ── Task 6: Vertical glassmorphism contact cards ── */
 .contact-details {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   margin-top: clamp(32px, 4vw, 52px);
-  max-width: 520px;
-  color: #0A0A0A;
+  max-width: 560px;
 }
 
-.contact-detail-item {
-  display: flex;
-  flex-direction: column;
+.contact-detail-card {
+  position: relative;
+  display: grid;
   gap: 6px;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(10, 10, 10, 0.1);
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(10, 10, 10, 0.1);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.contact-detail-item:first-child {
-  border-top: 1px solid rgba(10, 10, 10, 0.1);
+.contact-detail-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(184, 154, 94, 0.16), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
 }
 
-.contact-detail-label {
+.contact-detail-card span {
+  position: relative;
+  z-index: 2;
   font-family: Inter, sans-serif;
   font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #B89A5E;
 }
 
-.contact-detail-value {
+.contact-detail-card strong {
+  position: relative;
+  z-index: 2;
   font-family: Inter, sans-serif;
-  font-size: 1.05rem;
-  color: rgba(10, 10, 10, 0.72);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.contact-detail-value:hover {
-  color: #B89A5E;
-}
-
-.contact-detail-links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.contact-detail-separator {
-  color: rgba(10, 10, 10, 0.2);
-}
-
-.contact-detail-links a {
-  color: rgba(10, 10, 10, 0.72);
-  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(10, 10, 10, 0.76);
   transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.contact-detail-links a:hover {
-  color: #B89A5E;
+.contact-detail-card:hover {
+  transform: translateX(8px);
+  border-color: rgba(184, 154, 94, 0.56);
+  background: rgba(255, 255, 255, 0.64);
+  box-shadow: 0 18px 46px rgba(10, 10, 10, 0.1);
 }
 
+.contact-detail-card:hover::before {
+  opacity: 1;
+}
+
+.contact-detail-card:hover strong {
+  color: #0A0A0A;
+}
+
+/* ── Removed booking card styles ── */
+
+/* ── Contact form card ── */
 .contact-form {
   padding: clamp(24px, 4vw, 46px);
   border-radius: clamp(26px, 3vw, 42px);
@@ -153,6 +236,7 @@
     linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.34));
   box-shadow: 0 34px 100px rgba(10, 10, 10, 0.12);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .contact-field {
@@ -170,6 +254,7 @@
   color: rgba(184, 154, 94, 0.95);
 }
 
+/* ── Task 3: Field hover/focus using PRD colors ── */
 .contact-field input,
 .contact-field select,
 .contact-field textarea {
@@ -184,15 +269,15 @@
   padding: 16px 18px;
   outline: none;
   transition:
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    background 0.35s ease,
-    transform 0.35s ease;
+    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .contact-field input::placeholder,
 .contact-field textarea::placeholder {
-  color: rgba(10, 10, 10, 0.42);
+  color: rgba(10, 10, 10, 0.38);
 }
 
 .contact-field select {
@@ -215,61 +300,71 @@
   resize: vertical;
 }
 
+/* Hover */
+.contact-field input:hover,
+.contact-field select:hover,
+.contact-field textarea:hover {
+  border-color: rgba(184, 154, 94, 0.46);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+/* Focus */
 .contact-field input:focus,
 .contact-field select:focus,
 .contact-field textarea:focus {
-  border-color: rgba(184, 154, 94, 0.82);
+  border-color: rgba(184, 154, 94, 0.85);
   box-shadow: 0 0 0 4px rgba(184, 154, 94, 0.12);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
 }
 
+/* ── Task 2: Submit button — overrides to match .btn-gold on light bg ──
+   We add contact-submit alongside btn-gold (applied in JSX).
+   These overrides adapt the shared btn-gold to this light section context. */
 .contact-submit {
   width: 100%;
   min-height: 54px;
   margin-top: 14px;
-  border: 1px solid #B89A5E;
-  border-radius: 999px;
-  background: #B89A5E;
-  color: #0A0A0A;
-  font-family: Inter, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   cursor: pointer;
-  transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Inherit btn-gold base — keep its exact design.
+     Ensure the button fills the form width. */
 }
 
-.contact-submit:hover {
-  transform: translateY(-2px);
-  background: #0A0A0A;
-  color: #F2F0EB;
-  border-color: #0A0A0A;
-  box-shadow: 0 18px 44px rgba(10, 10, 10, 0.16);
+/* Spam protection */
+.contact-botcheck {
+  display: none !important;
 }
 
-.contact-submit:active {
-  transform: translateY(0);
+.contact-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
 }
 
-.contact-status-message {
-  margin-top: 18px;
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(184, 154, 94, 0.12);
-  border: 1px solid rgba(184, 154, 94, 0.3);
-  color: #B89A5E;
+/* Status message */
+.contact-form-status {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
   font-family: Inter, sans-serif;
-  font-size: 0.88rem;
-  font-weight: 500;
-  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
+.contact-form-status.is-success {
+  border: 1px solid rgba(184, 154, 94, 0.32);
+  background: rgba(184, 154, 94, 0.1);
+  color: rgba(10, 10, 10, 0.78);
+}
+
+.contact-form-status.is-error {
+  border: 1px solid rgba(160, 42, 42, 0.28);
+  background: rgba(160, 42, 42, 0.08);
+  color: rgba(120, 26, 26, 0.9);
+}
+
+/* ── Responsiveness ── */
 @media (max-width: 1024px) {
   .contact-inner {
     grid-template-columns: 1fr;
@@ -277,12 +372,31 @@
   }
 
   .contact-content {
+    position: relative;
+    top: auto;
     max-width: 840px;
+  }
+
+  .contact-details {
+    max-width: 100%;
+  }
+
+  .contact-form {
+    max-width: 860px;
+    width: 100%;
   }
 }
 
+/* Mobile: no fixed background to avoid performance issues */
 @media (max-width: 768px) {
+  .contact-section::before {
+    background-attachment: scroll;
+    filter: blur(7px);
+    opacity: 0.22;
+  }
+
   .contact-bg-word {
+    top: 18px !important;
     left: 50% !important;
     width: 100% !important;
     max-width: 100vw !important;
@@ -292,6 +406,10 @@
     overflow: hidden !important;
     font-size: clamp(3.8rem, 18vw, 6.2rem) !important;
   }
+
+  .contact-detail-card:hover {
+    transform: translateY(-3px);
+  }
 }
 
 @media (max-width: 640px) {
@@ -300,15 +418,17 @@
   }
 
   .contact-content h2 {
-    font-size: clamp(2.9rem, 13vw, 4.6rem) !important;
+    font-size: clamp(2.85rem, 13vw, 4.6rem) !important;
     line-height: 0.95 !important;
+    letter-spacing: -0.04em !important;
     white-space: normal !important;
   }
 
   .contact-content p {
     max-width: 90vw;
-    font-size: 0.92rem;
-    line-height: 1.75;
+    font-size: 0.72rem;
+    line-height: 1.65;
+    letter-spacing: 0.065em;
   }
 
   .contact-form {
@@ -322,25 +442,34 @@
     font-size: 0.95rem;
     padding: 15px 16px;
   }
+
+  .contact-detail-card {
+    transform: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .contact-bg-word {
+    top: 14px !important;
+    font-size: clamp(3.1rem, 17vw, 4.8rem) !important;
+  }
 }
 
 @media (max-width: 360px) {
   .contact-content h2 {
     font-size: clamp(2.35rem, 12vw, 3.3rem) !important;
   }
-
-  .contact-bg-word {
-    font-size: clamp(2.8rem, 16vw, 4.1rem) !important;
-  }
 }
 
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .contact-submit,
-  .contact-detail-value,
-  .contact-detail-links a {
+  .contact-detail-card,
+  .contact-detail-card strong {
     transition: none;
   }
-  .contact-submit:hover {
+
+  .contact-detail-card:hover {
     transform: none;
   }
 }
