@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/contact.css';
+import contactBackground from "../assets/contact.jpg";
+
 
 const Contact = () => {
   const [status, setStatus] = useState('');
@@ -19,7 +21,11 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="contact-section">
+    <section 
+      id="contact" 
+      className="contact-section"
+      style={{ "--contact-bg-image": `url(${contactBackground})` }}
+    >
       <div className="contact-bg-word" aria-hidden="true" data-reveal="soft">
         CONNECT
       </div>
@@ -27,8 +33,9 @@ const Contact = () => {
       <div className="contact-inner">
         <div className="contact-content" data-reveal="fade-right">
           <div className="contact-kicker">
-            <span>06</span>
-            <span>INQUIRE</span>
+            <span className="contact-kicker-line"></span>
+            <span className="contact-kicker-index">06</span>
+            <span className="contact-kicker-text">INQUIRE</span>
           </div>
 
           <h2>Let’s Make Magic Together</h2>
@@ -38,35 +45,34 @@ const Contact = () => {
           </p>
 
           <div className="contact-details">
-            <div className="contact-detail-item">
-              <span className="contact-detail-label">Email</span>
-              {/* TODO: Replace email link with final client-provided link */}
-              <a href="mailto:contact@wasamchaudhry.com" className="contact-detail-value">
-                contact@wasamchaudhry.com
-              </a>
-            </div>
+            <a className="contact-detail-card" href="mailto:contact@wasamchaudhry.com">
+              <span>Email</span>
+              <strong>contact@wasamchaudhry.com</strong>
+            </a>
 
-            <div className="contact-detail-item">
-              <span className="contact-detail-label">Social</span>
-              <div className="contact-detail-links">
-                {/* TODO: Replace social links with final client-provided links */}
-                <a href="#" target="_blank" rel="noopener noreferrer" className="contact-detail-value">
-                  LinkedIn
-                </a>
-                <span className="contact-detail-separator">/</span>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="contact-detail-value">
-                  Instagram
-                </a>
-              </div>
-            </div>
+            {/* TODO: Replace social URLs with final client-provided links. */}
+            <a className="contact-detail-card" href="#" target="_blank" rel="noreferrer">
+              <span>LinkedIn</span>
+              <strong>Connect professionally</strong>
+            </a>
 
-            <div className="contact-detail-item">
-              <span className="contact-detail-label">Booking</span>
-              {/* TODO: Replace booking link with final client-provided link */}
-              <a href="#" target="_blank" rel="noopener noreferrer" className="contact-detail-value">
-                Schedule a Conversation
-              </a>
-            </div>
+            <a className="contact-detail-card" href="#" target="_blank" rel="noreferrer">
+              <span>Instagram</span>
+              <strong>Follow the journey</strong>
+            </a>
+
+            <a className="contact-detail-card" href="#" target="_blank" rel="noreferrer">
+              <span>YouTube</span>
+              <strong>Watch media updates</strong>
+            </a>
+
+            {/* TODO: Replace booking URL with final client-provided booking link. */}
+            <a className="contact-booking-card" href="#" aria-label="Book a meeting">
+              <span>Book a Meeting</span>
+              <strong>Schedule a private conversation</strong>
+              <small>Business • Media • Partnerships</small>
+              <i aria-hidden="true">↗</i>
+            </a>
           </div>
         </div>
 
@@ -93,12 +99,12 @@ const Contact = () => {
             </select>
           </div>
 
-          <div className="contact-field">
+          <div className="contact-field contact-field--message">
             <label htmlFor="message">Message</label>
             <textarea id="message" name="message" required aria-required="true"></textarea>
           </div>
 
-          <button type="submit" className="contact-submit">
+          <button type="submit" className="contact-submit btn-gold">
             Send Inquiry
           </button>
 
